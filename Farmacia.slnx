@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Farmacia_Consola/Farmacia_Consola.csproj" />
+  <Project Path="Farmacia_Prueba/Farmacia_Pruebas.csproj" />
+  <Project Path="Lib_Farmacia/Farmacia_Libreria.csproj" />
+</Solution>
