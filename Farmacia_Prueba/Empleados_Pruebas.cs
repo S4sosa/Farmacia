@@ -1,4 +1,4 @@
-﻿using Farmacia_libreria.entidades;
+using Farmacia_libreria.entidades;
 using Farmacia_libreria.implementaciones;
 using Farmacia_libreria.interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Farmacia_Pruebas
 {
     [TestClass]
-    public class Cargos_Pruebas
+    public class Empleados_Pruebas
     {
         private IConexion conexion;
-        private Cargos? entidad = null;
+        private Empleados? entidad = null;
 
-        public Cargos_Pruebas()
+        public Empleados_Pruebas()
         {
             this.conexion = new Conexion();
             this.conexion.StringConexion = "server=(localdb)\\MSSQLLocalDB;database=farmacia_db;Integrated Security=True;TrustServerCertificate=true;";
@@ -28,34 +28,46 @@ namespace Farmacia_Pruebas
 
         public void Insertar()
         {
-            this.entidad = new Cargos()
+            var cargo = new Cargos() { nombre = "Cargo Prueba Secundario" };
+            this.conexion.Cargos!.Add(cargo);
+            this.conexion.SaveChanges();
+
+            this.entidad = new Empleados()
             {
-                nombre = "Farmaceutico Prueba"
+                persona = 1,
+                cargo = 1
             };
-            this.conexion.Cargos!.Add(this.entidad!);
+            this.conexion.Empleados!.Add(this.entidad!);
             this.conexion.SaveChanges();
         }
 
         public void Consultar()
         {
-            var lista = this.conexion.Cargos!.ToList();
+            var lista = this.conexion.Empleados!.ToList();
             if (lista.Count <= 0)
                 throw new Exception("Lista vacia");
         }
 
         private void Actualizar()
         {
-            this.entidad!.nombre = "Farmaceutico Actualizado";
+            this.entidad!.cargo = this.conexion.Cargos!.OrderByDescending(x => x.Id).First().Id;
 
-            var entry = this.conexion!.Entry<Cargos>(this.entidad);
+            var entry = this.conexion!.Entry<Empleados>(this.entidad);
             entry.State = EntityState.Modified;
             this.conexion!.SaveChanges();
         }
 
         private void Borrar()
         {
-            this.conexion.Cargos!.Remove(this.entidad!);
+            this.conexion.Empleados!.Remove(this.entidad!);
             this.conexion.SaveChanges();
+
+            var dependencia = this.conexion.Cargos!.FirstOrDefault(x => x.nombre == "Cargo Prueba Secundario");
+            if (dependencia != null)
+            {
+                this.conexion.Cargos!.Remove(dependencia);
+                this.conexion.SaveChanges();
+            }
         }
     }
 }

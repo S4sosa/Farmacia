@@ -1,4 +1,4 @@
-﻿using Farmacia_libreria.entidades;
+using Farmacia_libreria.entidades;
 using Farmacia_libreria.implementaciones;
 using Farmacia_libreria.interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Farmacia_Pruebas
 {
     [TestClass]
-    public class Cargos_Pruebas
+    public class Recetas_Pruebas
     {
         private IConexion conexion;
-        private Cargos? entidad = null;
+        private Recetas? entidad = null;
 
-        public Cargos_Pruebas()
+        public Recetas_Pruebas()
         {
             this.conexion = new Conexion();
             this.conexion.StringConexion = "server=(localdb)\\MSSQLLocalDB;database=farmacia_db;Integrated Security=True;TrustServerCertificate=true;";
@@ -28,33 +28,35 @@ namespace Farmacia_Pruebas
 
         public void Insertar()
         {
-            this.entidad = new Cargos()
+            this.entidad = new Recetas()
             {
-                nombre = "Farmaceutico Prueba"
+                cliente = 1,
+                medicoNombre = "Dr. Prueba",
+                fechaEmision = DateTime.Now
             };
-            this.conexion.Cargos!.Add(this.entidad!);
+            this.conexion.Recetas!.Add(this.entidad!);
             this.conexion.SaveChanges();
         }
 
         public void Consultar()
         {
-            var lista = this.conexion.Cargos!.ToList();
+            var lista = this.conexion.Recetas!.ToList();
             if (lista.Count <= 0)
                 throw new Exception("Lista vacia");
         }
 
         private void Actualizar()
         {
-            this.entidad!.nombre = "Farmaceutico Actualizado";
+            this.entidad!.medicoNombre = "Dr. Actualizado";
 
-            var entry = this.conexion!.Entry<Cargos>(this.entidad);
+            var entry = this.conexion!.Entry<Recetas>(this.entidad);
             entry.State = EntityState.Modified;
             this.conexion!.SaveChanges();
         }
 
         private void Borrar()
         {
-            this.conexion.Cargos!.Remove(this.entidad!);
+            this.conexion.Recetas!.Remove(this.entidad!);
             this.conexion.SaveChanges();
         }
     }
