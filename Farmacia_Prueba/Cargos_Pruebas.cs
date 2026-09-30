@@ -33,7 +33,7 @@ namespace Farmacia_Pruebas
                 nombre = "Farmaceutico Prueba"
             };
             this.conexion.Cargos!.Add(this.entidad!);
-            this.conexion.SaveChanges();
+            ((DbContext)this.conexion!).SaveChanges();
         }
 
         public void Consultar()

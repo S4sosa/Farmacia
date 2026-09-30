@@ -1,5 +1,6 @@
 ﻿using Farmacia_libreria.entidades;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Farmacia_libreria.interfaces
 {
@@ -27,6 +28,7 @@ namespace Farmacia_libreria.interfaces
         DbSet<DetallesVentas>? DetallesVentas { get; set; }
         DbSet<Facturas>? Facturas { get; set; }
 
-
+        EntityEntry<T> Entry<T>(T entity) where T : class;   // <- nuevo
+        int SaveChanges();                                   // <- nuevo
     }
 }
