@@ -14,7 +14,7 @@ namespace Farmacia_Pruebas
         public DetallesRecetas_Pruebas()
         {
             this.conexion = new Conexion();
-            this.conexion.StringConexion = "server=(localdb)\\MSSQLLocalDB;database=farmacia_db;Integrated Security=True;TrustServerCertificate=true;";
+            this.conexion.StringConexion = "server=localhost;database=farmacia_db;Integrated Security=True;TrustServerCertificate=true;";
         }
 
         [TestMethod]
