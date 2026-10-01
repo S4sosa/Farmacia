@@ -64,7 +64,7 @@ namespace Farmacia_Pruebas
             this.conexion.Facturas!.Remove(this.entidad!);
             this.conexion.SaveChanges();
 
-            this.conexion.MetodosPagos!.Remove(MetodoPago);
+            this.conexion.MetodosPagos!.Remove(MetodoPago!);
             this.conexion.SaveChanges();
         }
     }

@@ -63,7 +63,7 @@ namespace Farmacia_Pruebas
             this.conexion.Empleados!.Remove(this.entidad!);
             this.conexion.SaveChanges();
 
-            this.conexion.Cargos!.Remove(cargo);
+            this.conexion.Cargos!.Remove(cargo!);
             this.conexion.SaveChanges();
         }
     }
