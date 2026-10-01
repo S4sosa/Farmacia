@@ -10,6 +10,7 @@ namespace Farmacia_Pruebas
     {
         private IConexion conexion;
         private Medicamentos? entidad = null;
+        private Presentaciones? Presentacion = null;
 
         public Medicamentos_Pruebas()
         {
@@ -28,8 +29,8 @@ namespace Farmacia_Pruebas
 
         public void Insertar()
         {
-            var presentacion = new Presentaciones() { nombre = "Presentacion Prueba Secundaria" };
-            this.conexion.Presentaciones!.Add(presentacion);
+            Presentacion = new Presentaciones() { nombre = "Presentacion Prueba Secundaria" };
+            this.conexion.Presentaciones!.Add(Presentacion);
             this.conexion.SaveChanges();
 
             this.entidad = new Medicamentos()
@@ -61,13 +62,10 @@ namespace Farmacia_Pruebas
         {
             this.conexion.Medicamentos!.Remove(this.entidad!);
             this.conexion.SaveChanges();
-
-            var dependencia = this.conexion.Presentaciones!.FirstOrDefault(x => x.nombre == "Presentacion Prueba Secundaria");
-            if (dependencia != null)
-            {
-                this.conexion.Presentaciones!.Remove(dependencia);
-                this.conexion.SaveChanges();
-            }
+           
+            this.conexion.Presentaciones!.Remove(Presentacion);
+            this.conexion.SaveChanges();
+            
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Farmacia_Pruebas
     {
         private IConexion conexion;
         private Facturas? entidad = null;
+        private MetodosPagos? MetodoPago = null;
+
 
         public Facturas_Pruebas()
         {
@@ -28,8 +30,8 @@ namespace Farmacia_Pruebas
 
         public void Insertar()
         {
-            var metodoPago = new MetodosPagos() { nombre = "Metodo Prueba Secundario" };
-            this.conexion.MetodosPagos!.Add(metodoPago);
+            MetodoPago = new MetodosPagos() { nombre = "Metodo Prueba Secundario" };
+            this.conexion.MetodosPagos!.Add(MetodoPago);
             this.conexion.SaveChanges();
 
             this.entidad = new Facturas()
@@ -62,12 +64,8 @@ namespace Farmacia_Pruebas
             this.conexion.Facturas!.Remove(this.entidad!);
             this.conexion.SaveChanges();
 
-            var dependencia = this.conexion.MetodosPagos!.FirstOrDefault(x => x.nombre == "Metodo Prueba Secundario");
-            if (dependencia != null)
-            {
-                this.conexion.MetodosPagos!.Remove(dependencia);
-                this.conexion.SaveChanges();
-            }
+            this.conexion.MetodosPagos!.Remove(MetodoPago);
+            this.conexion.SaveChanges();
         }
     }
 }

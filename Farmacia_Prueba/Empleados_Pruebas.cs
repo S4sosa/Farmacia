@@ -9,6 +9,7 @@ namespace Farmacia_Pruebas
     public class Empleados_Pruebas
     {
         private IConexion conexion;
+        private Cargos? cargo = null;
         private Empleados? entidad = null;
 
         public Empleados_Pruebas()
@@ -28,7 +29,7 @@ namespace Farmacia_Pruebas
 
         public void Insertar()
         {
-            var cargo = new Cargos() { nombre = "Cargo Prueba Secundario" };
+            cargo = new Cargos() { nombre = "Cargo Prueba Secundario" };
             this.conexion.Cargos!.Add(cargo);
             this.conexion.SaveChanges();
 
@@ -62,12 +63,8 @@ namespace Farmacia_Pruebas
             this.conexion.Empleados!.Remove(this.entidad!);
             this.conexion.SaveChanges();
 
-            var dependencia = this.conexion.Cargos!.FirstOrDefault(x => x.nombre == "Cargo Prueba Secundario");
-            if (dependencia != null)
-            {
-                this.conexion.Cargos!.Remove(dependencia);
-                this.conexion.SaveChanges();
-            }
+            this.conexion.Cargos!.Remove(cargo);
+            this.conexion.SaveChanges();
         }
     }
 }
