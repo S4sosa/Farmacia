@@ -133,6 +133,27 @@ CREATE TABLE [DetallesCompras] (
     [Precio] DECIMAL(10,2) NOT NULL
 );
 
+CREATE TABLE [Roles] (
+    [Id] INT IDENTITY(1,1) PRIMARY KEY,
+    [Nombre] VARCHAR(50) NOT NULL
+);
+-- Unicos 2 Roles Iniciales --
+INSERT INTO [Roles] ([Nombre]) VALUES ('Administrador'); -- 1 -- 
+INSERT INTO [Roles] ([Nombre]) VALUES ('Cliente'); -- 2 -- 
+
+CREATE TABLE [Usuarios] (
+    [Id] INT IDENTITY(1,1) PRIMARY KEY,
+    [Nombre] VARCHAR(100) NOT NULL,
+    [Correo] VARCHAR(100) NOT NULL,
+    [Contrasena] VARCHAR(100) NOT NULL,
+    [Rol] INT NOT NULL REFERENCES [Roles]([Id])
+);
+-- Ingresando un usuario administrador incicial -- 
+INSERT INTO [Usuarios] ([Nombre], [Correo], [Contrasena], [Rol])
+VALUES ('Administrador', 'admin@farmacia.com', '12345', 1);
+
+
+
 --insertando valores en cada una de las tablas mientras se hacen las pruebas unitarias. 
 --Primero tablas padre y luego hijas.
 

@@ -33,6 +33,8 @@ namespace Farmacia_libreria.implementaciones
         public DbSet<DetallesRecetas>? DetallesRecetas { get; set; }
         public DbSet<DetallesVentas>? DetallesVentas { get; set; }
         public DbSet<Facturas>? Facturas { get; set; }
+        public DbSet<Roles>? Roles { get; set; }
+        public DbSet<Usuarios>? Usuarios { get; set; }
 
     }
 }
