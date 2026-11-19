@@ -1,3 +1,7 @@
+/*
+USE MASTER 
+DROP DATABASE farmacia_db
+*/
 CREATE DATABASE farmacia_db;
 GO
 USE farmacia_db;
@@ -152,7 +156,12 @@ CREATE TABLE [Usuarios] (
 INSERT INTO [Usuarios] ([Nombre], [Correo], [Contrasena], [Rol])
 VALUES ('Administrador', 'admin@farmacia.com', '12345', 1);
 
-
+CREATE TABLE [Auditorias] ( 
+    [Id] INT IDENTITY(1,1) PRIMARY KEY,
+    [correo] VARCHAR(100) NOT NULL,
+    [fecha] DATETIME NOT NULL,
+    [exitoso] BIT NOT NULL
+); -- Auditorias sin fk porque si el login falla, el usuario puede no existir en la BD -- 
 
 --insertando valores en cada una de las tablas mientras se hacen las pruebas unitarias. 
 --Primero tablas padre y luego hijas.

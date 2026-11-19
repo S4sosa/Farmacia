@@ -29,6 +29,7 @@ namespace Lib_Farmacia_Aplicacion.interfaces
         DbSet<Facturas>? Facturas { get; set; }
         DbSet<Roles>? Roles { get; set; }
         DbSet<Usuarios>? Usuarios { get; set; }
+        DbSet<Auditorias>? Auditorias { get; set; }
 
         EntityEntry<T> Entry<T>(T entity) where T : class;   
         int SaveChanges();                                   
