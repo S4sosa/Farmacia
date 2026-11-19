@@ -1,0 +1,61 @@
+using Lib_Farmacia_Aplicacion.entidades;
+using Lib_Farmacia_Aplicacion.implementaciones;
+using Lib_Farmacia_Aplicacion.interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace Farmacia_Pruebas
+{
+    [TestClass]
+    public class Categorias_Pruebas
+    {
+        private IConexion conexion;
+        private Categorias? entidad = null;
+
+        public Categorias_Pruebas()
+        {
+            this.conexion = new Conexion();
+            this.conexion.StringConexion = "server=localhost;database=farmacia_db;Integrated Security=True;TrustServerCertificate=true;";
+        }
+
+        [TestMethod]
+        public void Execute()
+        {
+            Insertar();
+            Consultar();
+            Actualizar();
+            Borrar();
+        }
+
+        public void Insertar()
+        {
+            this.entidad = new Categorias()
+            {
+                nombre = "Analgesicos Prueba"
+            };
+            this.conexion.Categorias!.Add(this.entidad!);
+            this.conexion.SaveChanges();
+        }
+
+        public void Consultar()
+        {
+            var lista = this.conexion.Categorias!.ToList();
+            if (lista.Count <= 0)
+                throw new Exception("Lista vacia");
+        }
+
+        private void Actualizar()
+        {
+            this.entidad!.nombre = "Analgesicos Actualizados";
+
+            var entry = this.conexion!.Entry<Categorias>(this.entidad);
+            entry.State = EntityState.Modified;
+            this.conexion!.SaveChanges();
+        }
+
+        private void Borrar()
+        {
+            this.conexion.Categorias!.Remove(this.entidad!);
+            this.conexion.SaveChanges();
+        }
+    }
+}
