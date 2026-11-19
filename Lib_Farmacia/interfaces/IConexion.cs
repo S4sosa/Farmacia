@@ -27,10 +27,8 @@ namespace Farmacia_libreria.interfaces
         DbSet<DetallesRecetas>? DetallesRecetas { get; set; }
         DbSet<DetallesVentas>? DetallesVentas { get; set; }
         DbSet<Facturas>? Facturas { get; set; }
-        DbSet<Roles>? Roles { get; set; }
-        DbSet<Usuarios>? Usuarios { get; set; }
 
-        EntityEntry<T> Entry<T>(T entity) where T : class;   
-        int SaveChanges();                                   
+        EntityEntry<T> Entry<T>(T entity) where T : class;   // <- nuevo
+        int SaveChanges();                                   // <- nuevo
     }
 }
