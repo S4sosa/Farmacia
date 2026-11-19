@@ -145,16 +145,20 @@ CREATE TABLE [Roles] (
 INSERT INTO [Roles] ([Nombre]) VALUES ('Administrador'); -- 1 -- 
 INSERT INTO [Roles] ([Nombre]) VALUES ('Cliente'); -- 2 -- 
 
+
 CREATE TABLE [Usuarios] (
     [Id] INT IDENTITY(1,1) PRIMARY KEY,
     [Nombre] VARCHAR(100) NOT NULL,
     [Correo] VARCHAR(100) NOT NULL,
     [Contrasena] VARCHAR(100) NOT NULL,
-    [Rol] INT NOT NULL REFERENCES [Roles]([Id])
+    [Rol] INT NOT NULL REFERENCES [Roles]([Id]),
+    [Cliente] INT NULL REFERENCES [Clientes]([Id])
 );
 -- Ingresando un usuario administrador incicial -- 
 INSERT INTO [Usuarios] ([Nombre], [Correo], [Contrasena], [Rol])
-VALUES ('Administrador', 'admin@farmacia.com', '12345', 1);
+VALUES ('Administrador', 'admin@farmacia.com', '12345', 1),
+       ('Cliente', 'cliente@farmacia.com', '12345', 2);
+
 
 CREATE TABLE [Auditorias] ( 
     [Id] INT IDENTITY(1,1) PRIMARY KEY,
@@ -162,6 +166,8 @@ CREATE TABLE [Auditorias] (
     [fecha] DATETIME NOT NULL,
     [exitoso] BIT NOT NULL
 ); -- Auditorias sin fk porque si el login falla, el usuario puede no existir en la BD -- 
+
+
 
 --insertando valores en cada una de las tablas mientras se hacen las pruebas unitarias. 
 --Primero tablas padre y luego hijas.
