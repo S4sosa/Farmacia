@@ -9,7 +9,7 @@ namespace Lib_Farmacia_Aplicacion.entidades
         public int rol { get; set; }
         [ForeignKey("rol")] public Roles? _rol { get; set; }
         public int? cliente { get; set; } //NULLABLE porque el administrador no es un cliente 
-        [ForeignKey("cliente")] public clientes? _cliente { get; set; }
+        [ForeignKey("cliente")] public Clientes? _cliente { get; set; }
 
     }
 }
