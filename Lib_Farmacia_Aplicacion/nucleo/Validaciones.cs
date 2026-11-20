@@ -28,7 +28,7 @@ namespace Lib_Farmacia_Aplicacion.nucleo
         public static bool ValidarCompras(Compras entidad)
         {
             return entidad.laboratorio == 0 ||
-                entidad.total == 0; 
+                entidad.total <= 0; 
             //No se valida fecha por DateTime.now 
         }
 
@@ -37,7 +37,7 @@ namespace Lib_Farmacia_Aplicacion.nucleo
             return entidad.compra == 0 ||
                 entidad.producto == 0 ||
                 entidad.cantidad == 0 ||
-                entidad.precio == 0; 
+                entidad.precio <= 0; 
         }
 
         public static bool ValidarDetallesRecetas(DetallesRecetas entidad)
@@ -51,7 +51,7 @@ namespace Lib_Farmacia_Aplicacion.nucleo
         {
             return entidad.venta == 0 ||
                 entidad.producto == 0 ||
-                entidad.cantidad == 0; 
+                entidad.cantidad <= 0; 
         }
 
         public static bool ValidarEmpleados(Empleados entidad)
@@ -70,7 +70,7 @@ namespace Lib_Farmacia_Aplicacion.nucleo
         {
             return entidad.producto == 0 ||
                 entidad.sucursal == 0 ||
-                entidad.cantidad == 0;
+                entidad.cantidad <= 0; //el inventario no puede ser negativo
         }
 
         public static bool ValidarLaboratorios(Laboratorios entidad)
@@ -82,8 +82,8 @@ namespace Lib_Farmacia_Aplicacion.nucleo
         {
             return entidad.producto == 0 ||
                 String.IsNullOrEmpty(entidad.numLote) ||
-                entidad.fechaVencimiento == default;
-            //default en DateTime equivale a 01/01/0001 -- Se le asigna a una fecha cuando no se pone. 
+                entidad.fechaVencimiento.Date <= DateTime.Today; //Cambio en la condicion
+                // validamos que la fecha no sea menor o igual a la fecha actual, no se aceptan lotes vencidos. 
         }
 
         public static bool ValidarMedicamentos(Medicamentos entidad)
@@ -92,7 +92,7 @@ namespace Lib_Farmacia_Aplicacion.nucleo
                 entidad.presentacion == 0; 
         }
 
-        public static bool ValidarMetodosPago(MetodosPagos entidad)
+        public static bool ValidarMetodosPagos(MetodosPagos entidad)
         { 
             return string.IsNullOrEmpty(entidad.nombre);
         }
@@ -113,7 +113,7 @@ namespace Lib_Farmacia_Aplicacion.nucleo
         public static bool ValidarProductos(Productos entidad)
         {
             return String.IsNullOrEmpty(entidad.nombre) ||
-                entidad.precio == 0 ||
+                entidad.precio <= 0 || //precio no pude ser negativo
                 entidad.categoria == 0;
         }
 
@@ -148,7 +148,7 @@ namespace Lib_Farmacia_Aplicacion.nucleo
         public static bool ValidarVentas(Ventas entidad)
         {
             return entidad.cliente == 0 ||
-                entidad.total == 0; 
+                entidad.total <= 0; 
             //DateTime.Now
         }
     }
