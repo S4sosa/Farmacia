@@ -2,5 +2,6 @@
   <Project Path="Asp_Farmacia_Servicios/Asp_Farmacia_Servicios.csproj" Id="4229ea86-9407-4723-b5a6-01189867cb23" />
   <Project Path="Consola_Farmacia/Consola_Farmacia.csproj" />
   <Project Path="Lib_Farmacia_Aplicacion/Lib_Farmacia_Aplicacion.csproj" />
+  <Project Path="Lib_presentaciones/Lib_Farmacia_Presentaciones.csproj" Id="bd0fc67f-4d26-4b5e-830d-08511f95fc1c" />
   <Project Path="Pruebas_Farmacia/Pruebas_Farmacia.csproj" />
 </Solution>
