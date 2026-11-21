@@ -1,0 +1,6 @@
+@Asp_Farmacia_Servicios_HostAddress = http://localhost:5265
+
+GET {{Asp_Farmacia_Servicios_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
