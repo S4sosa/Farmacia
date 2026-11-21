@@ -26,6 +26,15 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
                 .ToList();
         }
 
+        public List<Clientes> BuscarCliente(Clientes entidad)
+        {
+            return this.IConexion.Clientes!
+                .Include(x => x._persona)
+                .Where(x => x._persona!.nombre!.Contains(entidad._persona!.nombre!) ||
+                            x._persona!.documento!.Contains(entidad._persona!.documento!))
+                .ToList();
+        }
+
         public Clientes InsertarCliente(Clientes entidad)
         {
             if (entidad.Id != 0)

@@ -8,6 +8,7 @@ namespace Lib_Farmacia_Aplicacion.interfaces
     public interface IVentasAplicacion
     {
         List<Ventas> ConsultarVentas();
+        List<Ventas> BuscarVenta(Ventas entidad);
         Ventas InsertarVenta(Ventas entidad);
         Ventas ActualizarVenta(Ventas entidad);
         Ventas BorrarVenta(Ventas entidad);

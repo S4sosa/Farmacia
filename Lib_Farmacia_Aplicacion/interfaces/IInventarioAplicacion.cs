@@ -8,6 +8,7 @@ namespace Lib_Farmacia_Aplicacion.interfaces
     public interface IInventarioAplicacion
     {
         List<Productos> ConsultarProductos();
+        List<Productos> BuscarProducto(Productos entidad);
         Productos InsertarProducto(Productos entidad);
         Productos ActualizarProducto(Productos entidad);
         Productos BorrarProducto(Productos entidad);

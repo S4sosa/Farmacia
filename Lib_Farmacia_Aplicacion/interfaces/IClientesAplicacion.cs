@@ -8,6 +8,7 @@ namespace Lib_Farmacia_Aplicacion.interfaces
     public interface IClientesAplicacion
     {
         List<Clientes> ConsultarClientes();
+        List<Clientes> BuscarCliente(Clientes entidad);
         Clientes InsertarCliente(Clientes entidad);
         Clientes ActualizarCliente(Clientes entidad);
         Clientes BorrarCliente(Clientes entidad);

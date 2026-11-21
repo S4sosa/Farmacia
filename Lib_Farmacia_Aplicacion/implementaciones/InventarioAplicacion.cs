@@ -24,6 +24,14 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             return this.IConexion.Productos!.ToList();
         }
 
+        public List<Productos> BuscarProducto(Productos entidad)
+        {
+            return this.IConexion.Productos!
+                .Include(x => x._categoria)
+                .Where(x => x.nombre!.Contains(entidad.nombre!))
+                .ToList();
+        }
+
         public Productos InsertarProducto(Productos entidad)
         {
             if (entidad.Id != 0)

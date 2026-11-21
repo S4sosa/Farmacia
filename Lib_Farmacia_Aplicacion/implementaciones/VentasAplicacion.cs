@@ -26,6 +26,14 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
                 .ToList();
         }
 
+        public List<Ventas> BuscarVenta(Ventas entidad)
+        {
+            return this.IConexion.Ventas!
+                .Include(x => x._cliente)
+                .Where(x => x.cliente == entidad.cliente)
+                .ToList();
+        }
+
         public Ventas InsertarVenta(Ventas entidad)
         {
             if (entidad.Id != 0)
