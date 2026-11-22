@@ -23,11 +23,19 @@
 
         <br /><br />
         <div class="containers_vn panel panel-default">
+            @{
+                var esCliente = HttpContext.Session.GetString("Rol") == "General";
+            }
             <table class="tb_data table table-striped table-bordered table-hover">
                 <tr>
                     <th>Nombre</th>
                     <th>Categoría</th>
                     <th>Precio</th>
+                    @if (esCliente)
+                    {
+                        <th>Cantidad</th>
+                        <th>Acción</th>
+                    }
                 </tr>
                 @if (Model != null && Model.Lista != null)
                 {
@@ -37,6 +45,21 @@
                             <td>@elemento.nombre</td>
                             <td>@elemento._categoria!.nombre</td>
                             <td>@elemento.precio.ToString("C")</td>
+                            @if (esCliente)
+                            {
+                                <td>
+                                    <input type="number" min="1" value="1"
+                                           name="cantidad_@elemento.Id"
+                                           class="form-control" style="width:90px; margin:auto" />
+                                </td>
+                                <td>
+                                    <input type="submit"
+                                           value="Comprar"
+                                           class="btn btn-secondary"
+                                           asp-page-handler="BtComprar"
+                                           asp-route-data="@elemento.Id" />
+                                </td>
+                            }
                         </tr>
                     }
                 }
