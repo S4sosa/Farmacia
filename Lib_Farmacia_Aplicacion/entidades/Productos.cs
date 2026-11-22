@@ -1,4 +1,6 @@
-﻿namespace Lib_Farmacia_Aplicacion.entidades
+﻿using System.Text.Json.Serialization;
+
+namespace Lib_Farmacia_Aplicacion.entidades
 {
     public class Productos
     {
@@ -7,6 +9,7 @@
         public Decimal precio { get; set; }
         public int categoria { get; set; }
         [ForeignKey("categoria")] public Categorias? _categoria { get; set; }
+        [JsonIgnore]
         public List<DetallesVentas>? detallesVentas { get; set; }
         public List<Inventarios>? inventarios { get; set; }
         public List<Lotes>? lotes { get; set; }

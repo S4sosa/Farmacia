@@ -5,5 +5,6 @@ namespace Lib_Farmacia_Presentacion.interfaces
     public interface IProductosPresentacion
     {
         List<Productos> ConsultarProductos();
+        List<Productos> BuscarProducto(string nombre);
     }
 }

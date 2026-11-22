@@ -20,5 +20,14 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             task.Wait();
             return task.Result;
         }
+
+        public List<Productos> BuscarProducto(string nombre)
+        {
+            var task = this.IComunicaciones.Ejecutar<List<Productos>>(
+                "Productos/BuscarProducto",
+                nombre);
+            task.Wait();
+            return task.Result;
+        }
     }
 }

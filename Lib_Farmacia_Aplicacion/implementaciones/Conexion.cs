@@ -1,12 +1,13 @@
 ﻿using Lib_Farmacia_Aplicacion.interfaces;
 using Lib_Farmacia_Aplicacion.entidades;
+using Lib_Farmacia_Aplicacion.nucleo;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lib_Farmacia_Aplicacion.implementaciones
 {
     public class Conexion : DbContext, IConexion
     {
-        public string? StringConexion { get; set; }
+        public string? StringConexion { get; set; } = DatosGenerales.StringConexion();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

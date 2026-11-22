@@ -90,6 +90,7 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             return this.IConexion.Recetas!
                 .Include(x => x._cliente)
+                .ThenInclude(x => x!._persona)
                 .ToList();
         }
 

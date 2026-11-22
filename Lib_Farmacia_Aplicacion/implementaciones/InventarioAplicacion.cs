@@ -21,7 +21,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
 
         public List<Productos> ConsultarProductos()
         {
-            return this.IConexion.Productos!.ToList();
+            return this.IConexion.Productos!
+                .Include(x => x._categoria)
+                .ToList();
         }
 
         public List<Productos> BuscarProducto(Productos entidad)

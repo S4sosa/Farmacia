@@ -1,6 +1,16 @@
 /*
-USE MASTER 
-DROP DATABASE farmacia_db
+USE master;
+GO
+
+IF DB_ID('farmacia_db') IS NOT NULL
+BEGIN
+    ALTER DATABASE farmacia_db
+    SET SINGLE_USER
+    WITH ROLLBACK IMMEDIATE;
+
+    DROP DATABASE farmacia_db;
+END;
+GO
 */
 CREATE DATABASE farmacia_db;
 GO
@@ -143,7 +153,7 @@ CREATE TABLE [Roles] (
 );
 -- Unicos 2 Roles Iniciales --
 INSERT INTO [Roles] ([Nombre]) VALUES ('Administrador'); -- 1 -- 
-INSERT INTO [Roles] ([Nombre]) VALUES ('Cliente'); -- 2 -- 
+INSERT INTO [Roles] ([Nombre]) VALUES ('General'); -- 2 -- 
 
 
 CREATE TABLE [Usuarios] (
@@ -154,12 +164,6 @@ CREATE TABLE [Usuarios] (
     [Rol] INT NOT NULL REFERENCES [Roles]([Id]),
     [Cliente] INT NULL REFERENCES [Clientes]([Id])
 );
--- Ingresando un usuario administrador incicial -- 
-INSERT INTO [Usuarios] ([Nombre], [Correo], [Contrasena], [Rol])
-VALUES ('Administrador', 'admin@farmacia.com', '12345', 1),
-       ('Cliente', 'cliente@farmacia.com', '12345', 2);
-
-
 CREATE TABLE [Auditorias] ( 
     [Id] INT IDENTITY(1,1) PRIMARY KEY,
     [correo] VARCHAR(100) NOT NULL,
@@ -169,65 +173,111 @@ CREATE TABLE [Auditorias] (
 
 
 
+
 --insertando valores en cada una de las tablas mientras se hacen las pruebas unitarias. 
 --Primero tablas padre y luego hijas.
 
 USE farmacia_db;
 GO
  
--- Un registro por tabla, en orden de padres a hijos.
--- Los Id empiezan en 1 (IDENTITY), por eso las claves foraneas usan 1.
+-- Registros de prueba en orden de padres a hijos.
+-- Los Id empiezan en 1 (IDENTITY), por eso las claves foraneas usan estos valores.
  
 -- 1. Sin claves foraneas
 INSERT INTO [Personas] ([Nombre], [Apellidos], [Documento], [Telefono])
-VALUES ('Ana', 'Gomez', '1001', '3001112233');
+VALUES ('Ana', 'Gomez', '1001', '3001112233'),
+       ('Luis', 'Martinez', '1002', '3002223344');
 
-INSERT INTO [Cargos] ([Nombre]) VALUES ('Farmaceutico');
+INSERT INTO [Cargos] ([Nombre])
+VALUES ('Farmaceutico'),
+       ('Administrador');
 
-INSERT INTO [Categorias] ([Nombre]) VALUES ('Analgesicos');
+INSERT INTO [Categorias] ([Nombre])
+VALUES ('Analgesicos'),
+       ('Antibioticos');
 
-INSERT INTO [Presentaciones] ([Nombre]) VALUES ('Tabletas');
+INSERT INTO [Presentaciones] ([Nombre])
+VALUES ('Tabletas'),
+       ('Capsulas');
 
-INSERT INTO [MetodosPagos] ([Nombre]) VALUES ('Efectivo');
+INSERT INTO [MetodosPagos] ([Nombre])
+VALUES ('Efectivo'),
+       ('Tarjeta');
 
-INSERT INTO [Laboratorios] ([Nombre]) VALUES ('Laboratorio Central');
+INSERT INTO [Laboratorios] ([Nombre])
+VALUES ('Laboratorio Central'),
+       ('Laboratorio Salud');
 
 INSERT INTO [Sucursales] ([Nombre], [Direccion], [Telefono], [Activo])
-VALUES ('Sucursal Centro', 'Calle 10 # 20-30', '6041234567', 1);
+VALUES ('Sucursal Centro', 'Calle 10 # 20-30', '6041234567', 1),
+       ('Sucursal Norte', 'Carrera 25 # 40-15', '6047654321', 1);
  
 -- 2
-INSERT INTO [Empleados] ([Persona], [Cargo]) VALUES (1, 1);
+INSERT INTO [Empleados] ([Persona], [Cargo])
+VALUES (1, 1),
+       (2, 2);
  
 INSERT INTO [Clientes] ([Persona], [FechaRegistro], [Activo])
-VALUES (1, '20260919', 1);
+VALUES (1, '20260919', 1),
+       (2, '20260920', 1);
+
+-- Usuarios iniciales: un administrador y un cliente asociado al cliente con Id 1.
+INSERT INTO [Usuarios] ([Nombre], [Correo], [Contrasena], [Rol], [Cliente])
+VALUES ('Administrador', 'admin@farmacia.com', '12345', 1, NULL),
+       ('Cliente', 'cliente@farmacia.com', '12345', 2, 1);
  
 INSERT INTO [Productos] ([Nombre], [Precio], [Categoria])
-VALUES ('Acetaminofen 500 mg', 2500.00, 1);
+VALUES ('Acetaminofen 500 mg', 2500.00, 1),
+       ('Amoxicilina 500 mg', 4800.00, 2),
+       ('Ibuprofeno 400 mg', 3200.00, 1),
+       ('Azitromicina 500 mg', 6500.00, 2),
+       ('Paracetamol 500 mg', 2800.00, 1);
  
 INSERT INTO [Compras] ([Laboratorio], [Fecha], [Total])
-VALUES (1, '20260919', 50000.00);
+VALUES (1, '20260919', 50000.00),
+       (2, '20260920', 75000.00);
  
 -- 3
-INSERT INTO [Inventarios] ([Producto], [Sucursal], [Cantidad]) VALUES (1, 1, 100);
+INSERT INTO [Inventarios] ([Producto], [Sucursal], [Cantidad])
+VALUES (1, 1, 100),
+       (2, 1, 80),
+       (3, 2, 120),
+       (4, 2, 60),
+       (5, 1, 90);
  
 INSERT INTO [Lotes] ([Producto], [NumLote], [FechaVencimiento])
-VALUES (1, 'L-001', '20281231');
+VALUES (1, 'L-001', '20281231'),
+       (2, 'L-002', '20290131'),
+       (3, 'L-003', '20281130'),
+       (4, 'L-004', '20291031'),
+       (5, 'L-005', '20291231');
  
-INSERT INTO [Medicamentos] ([Producto], [Presentacion]) VALUES (1, 1);
+INSERT INTO [Medicamentos] ([Producto], [Presentacion])
+VALUES (1, 1),
+       (2, 2);
  
 INSERT INTO [Recetas] ([Cliente], [MedicoNombre], [FechaEmision])
-VALUES (1, 'Dr. Carlos Ruiz', '20260919');
+VALUES (1, 'Dr. Carlos Ruiz', '20260919'),
+       (2, 'Dra. Maria Lopez', '20260920');
  
 INSERT INTO [Ventas] ([Cliente], [Fecha], [Total])
-VALUES (1, '20260919', 5000.00);
+VALUES (1, '20260919', 5000.00),
+       (2, '20260920', 9600.00);
  
 INSERT INTO [DetallesCompras] ([Compra], [Producto], [Cantidad], [Precio])
-VALUES (1, 1, 20, 2000.00);
+VALUES (1, 1, 20, 2000.00),
+       (2, 2, 30, 2500.00);
  
 -- 4
-INSERT INTO [DetallesRecetas] ([Receta], [Medicamento], [Cantidad]) VALUES (1, 1, 2);
+INSERT INTO [DetallesRecetas] ([Receta], [Medicamento], [Cantidad])
+VALUES (1, 1, 2),
+       (2, 2, 1);
 
-INSERT INTO [DetallesVentas] ([Venta], [Producto], [Cantidad]) VALUES (1, 1, 2);
+INSERT INTO [DetallesVentas] ([Venta], [Producto], [Cantidad])
+VALUES (1, 1, 2),
+       (2, 2, 2);
 
-INSERT INTO [Facturas] ([Venta], [MetodoPago]) VALUES (1, 1);
+INSERT INTO [Facturas] ([Venta], [MetodoPago])
+VALUES (1, 1),
+       (2, 2);
 GO

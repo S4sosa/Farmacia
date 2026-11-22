@@ -23,6 +23,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             return this.IConexion.Ventas!
                 .Include(x => x._cliente)
+                .ThenInclude(x => x!._persona)
+                .Include(x => x.detallesVentas!)
+                .ThenInclude(x => x._producto)
                 .ToList();
         }
 
@@ -30,6 +33,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             return this.IConexion.Ventas!
                 .Include(x => x._cliente)
+                .ThenInclude(x => x!._persona)
+                .Include(x => x.detallesVentas!)
+                .ThenInclude(x => x._producto)
                 .Where(x => x.cliente == entidad.cliente)
                 .ToList();
         }

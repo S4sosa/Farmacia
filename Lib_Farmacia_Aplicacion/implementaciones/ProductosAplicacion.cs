@@ -13,10 +13,18 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             this.IConexion = Iconexion;
         }
 
-        public List<Productos> ConsultarProductos(Productos entidad)
+        public List<Productos> ConsultarProductos()
         { 
             return this.IConexion.Productos!
                 .Include(x => x._categoria)
+                .ToList();
+        }
+
+        public List<Productos> BuscarProducto(string nombre)
+        {
+            return this.IConexion.Productos!
+                .Include(x => x._categoria)
+                .Where(x => x.nombre != null && x.nombre.Contains(nombre))
                 .ToList();
         }
     }

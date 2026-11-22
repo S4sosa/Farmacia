@@ -1,0 +1,186 @@
+@page
+@model ClientesModel
+@{
+    ViewData["Title"] = "Clientes";
+}
+<form method="post" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <h1 class="display-4">Clientes</h1>
+        <div>
+            <input type="submit"
+                   value="Consultar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtConsultar" />
+            <input type="submit"
+                   value="Nuevo Cliente"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtNuevo" />
+            <input type="submit"
+                   value="Guardar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtGuardar" />
+            <input type="submit"
+                   value="Nueva Receta"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtNuevaReceta" />
+            <input type="submit"
+                   value="Guardar Receta"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtGuardarReceta" />
+        </div>
+
+        @if (ViewData.ContainsKey("Mensaje"))
+        {
+            @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+        }
+
+        @if (Model.Formulario || Model.Borrar)
+        {
+            <input type="hidden" asp-for="@Model.ActualPersona!.Id" />
+            <input type="hidden" asp-for="@Model.ActualCliente!.Id" />
+        }
+
+        @if (Model.Formulario)
+        {
+            <div>
+                <h3>Cliente</h3>
+
+                <label>Nombre</label>
+                <input asp-for="@Model.ActualPersona!.nombre" class="form-control" />
+                <br />
+
+                <label>Apellidos</label>
+                <input asp-for="@Model.ActualPersona!.apellidos" class="form-control" />
+                <br />
+
+                <label>Documento</label>
+                <input asp-for="@Model.ActualPersona!.documento" class="form-control" />
+                <br />
+
+                <label>Teléfono</label>
+                <input asp-for="@Model.ActualPersona!.telefono" class="form-control" />
+                <br />
+            </div>
+        }
+
+        @if (Model.FormularioReceta)
+        {
+            <input type="hidden" asp-for="@Model.ActualReceta!.Id" />
+            <div>
+                <h3>Receta</h3>
+
+                <label>Cliente</label>
+                <select class="form-control"
+                        asp-for="@Model.ActualReceta!.cliente"
+                        asp-items="@(new SelectList(Model.ListaClientes, "Id", "nombre"))">
+                </select>
+                <br />
+
+                <label>Médico</label>
+                <input asp-for="@Model.ActualReceta!.medicoNombre" class="form-control" />
+                <br />
+
+                <label>Fecha Emisión</label>
+                <input type="date" asp-for="@Model.ActualReceta!.fechaEmision" class="form-control" />
+                <br />
+            </div>
+        }
+
+        @if (Model.Borrar)
+        {
+            <div class="popup">
+                <div class="pp_del_inner">
+                    <h3>Mensaje</h3>
+                    <h4>¿Quiere borrar el cliente: @Model.ActualPersona!.nombre @Model.ActualPersona!.apellidos?</h4>
+                    <input type="submit"
+                           value="Cancelar"
+                           class="btn btn-secondary"
+                           asp-page-handler="BtConsultar" />
+                    <input type="submit"
+                           value="Borrar"
+                           class="btn btn-secondary"
+                           asp-page-handler="BtBorrar" />
+                </div>
+            </div>
+        }
+
+        @if (!Model.Formulario && !Model.FormularioReceta)
+        {
+            <br /><br />
+            <h3>Clientes</h3>
+            <div class="containers_vn panel panel-default">
+                <table class="tb_data table table-striped table-bordered table-hover">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Documento</th>
+                        <th>Fecha Registro</th>
+                        <th>Activo</th>
+                        <th>Acción</th>
+                    </tr>
+                    @if (Model != null && Model.Lista != null)
+                    {
+                        foreach (var elemento in Model.Lista)
+                        {
+                            <tr>
+                                <td>@elemento._persona!.nombre</td>
+                                <td>@elemento._persona!.apellidos</td>
+                                <td>@elemento._persona!.documento</td>
+                                <td>@elemento.fechaRegistro.ToShortDateString()</td>
+                                <td>@(elemento.activo ? "Sí" : "No")</td>
+                                <td>
+                                    <input type="submit"
+                                           value="Editar"
+                                           class="btn btn-secondary"
+                                           asp-page-handler="BtEditar"
+                                           asp-route-data="@elemento.Id" />
+                                    <input type="submit"
+                                           value="Borrar"
+                                           class="btn btn-secondary"
+                                           asp-page-handler="BtPregBorrar"
+                                           asp-route-data="@elemento.Id" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+
+            <h3>Recetas</h3>
+            <div class="containers_vn panel panel-default">
+                <table class="tb_data table table-striped table-bordered table-hover">
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Médico</th>
+                        <th>Fecha Emisión</th>
+                        <th>Acción</th>
+                    </tr>
+                    @if (Model != null && Model.ListaRecetas != null)
+                    {
+                        foreach (var elemento in Model.ListaRecetas)
+                        {
+                            <tr>
+                                <td>@elemento._cliente!._persona!.nombre</td>
+                                <td>@elemento.medicoNombre</td>
+                                <td>@elemento.fechaEmision.ToShortDateString()</td>
+                                <td>
+                                    <input type="submit"
+                                           value="Editar"
+                                           class="btn btn-secondary"
+                                           asp-page-handler="BtEditarReceta"
+                                           asp-route-data="@elemento.Id" />
+                                    <input type="submit"
+                                           value="Borrar"
+                                           class="btn btn-secondary"
+                                           asp-page-handler="BtBorrarReceta"
+                                           asp-route-data="@elemento.Id" />
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</form>

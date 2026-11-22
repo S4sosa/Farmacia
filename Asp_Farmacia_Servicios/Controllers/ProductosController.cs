@@ -17,11 +17,16 @@ namespace Asp_Farmacia_Servicios.Controllers
         }
 
         [HttpPost]
-        public List<Productos> ConsultarProductos(Productos entidad)
+        public List<Productos> ConsultarProductos()
         {
-            return this.IProductosAplicacion.ConsultarProductos(entidad);
+            return this.IProductosAplicacion.ConsultarProductos();
         }
-        //Solo consultar, porque la pagina es solo de vista 
-        // para los usuarios. 
+
+        [HttpPost]
+        public List<Productos> BuscarProducto([FromBody] string nombre)
+        {
+            return this.IProductosAplicacion.BuscarProducto(nombre);
+        }
+
     }
 }

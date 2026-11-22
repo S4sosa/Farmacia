@@ -1,0 +1,46 @@
+@page
+@model ProductosModel
+@{
+    ViewData["Title"] = "Productos";
+}
+<form method="post" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <h1 class="display-4">Productos disponibles</h1>
+        <div>
+            <input type="submit"
+                   value="Consultar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtConsultar" />
+            <input placeholder="Buscar por nombre"
+                   asp-for="@Model.Filtro!.nombre" />
+        </div>
+
+        @if (ViewData.ContainsKey("Mensaje"))
+        {
+            @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+        }
+
+        <br /><br />
+        <div class="containers_vn panel panel-default">
+            <table class="tb_data table table-striped table-bordered table-hover">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                </tr>
+                @if (Model != null && Model.Lista != null)
+                {
+                    foreach (var elemento in Model.Lista)
+                    {
+                        <tr>
+                            <td>@elemento.nombre</td>
+                            <td>@elemento._categoria!.nombre</td>
+                            <td>@elemento.precio.ToString("C")</td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</form>

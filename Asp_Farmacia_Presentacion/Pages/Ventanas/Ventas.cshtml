@@ -1,0 +1,145 @@
+@page
+@model VentasModel
+@{
+    var rol = HttpContext.Session.GetString("Rol");
+    var esCliente = rol == "General";
+    ViewData["Title"] = esCliente ? "Mis compras" : "Ventas";
+}
+<form method="post" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <h1 class="display-4">@(esCliente ? "Mis compras" : "Ventas")</h1>
+        <div>
+            <input type="submit"
+                   value="Consultar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtConsultar" />
+            @if (HttpContext.Session.GetString("Rol") == "Administrador")
+            {
+                <input type="submit"
+                       value="Nueva Venta"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtNuevo" />
+                <input type="submit"
+                       value="Guardar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtGuardar" />
+            }
+        </div>
+
+        @if (ViewData.ContainsKey("Mensaje"))
+        {
+            @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+        }
+
+        @if (Model.Formulario || Model.Borrar)
+        {
+            <input type="hidden" asp-for="@Model.Actual!.Id" />
+        }
+
+        @if (Model.Formulario)
+        {
+            <div>
+                <h3>Venta</h3>
+
+                <label>Cliente</label>
+                <select class="form-control"
+                        asp-for="@Model.Actual!.cliente"
+                        asp-items="@(new SelectList(Model.Clientes, "Id", "nombre"))">
+                </select>
+                <br />
+
+                <label>Total</label>
+                <input asp-for="@Model.Actual!.total" class="form-control" />
+                <br />
+            </div>
+        }
+
+        @if (Model.Borrar)
+        {
+            <div class="popup">
+                <div class="pp_del_inner">
+                    <h3>Mensaje</h3>
+                    <h4>¿Quiere borrar la venta #@Model.Actual!.Id?</h4>
+                    <input type="submit"
+                           value="Cancelar"
+                           class="btn btn-secondary"
+                           asp-page-handler="BtConsultar" />
+                    <input type="submit"
+                           value="Borrar"
+                           class="btn btn-secondary"
+                           asp-page-handler="BtBorrar" />
+                </div>
+            </div>
+        }
+
+        @if (!Model.Formulario)
+        {
+            <br /><br />
+            <div class="containers_vn panel panel-default">
+                <table class="tb_data table table-striped table-bordered table-hover">
+                    <tr>
+                        @if (!esCliente)
+                        {
+                            <th>Cliente</th>
+                        }
+                        @if (esCliente)
+                        {
+                            <th>Producto</th>
+                        }
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        @if (rol == "Administrador")
+                        {
+                            <th>Acción</th>
+                        }
+                    </tr>
+                    @if (Model != null && Model.Lista != null)
+                    {
+                        foreach (var elemento in Model.Lista)
+                        {
+                            <tr>
+                                @if (!esCliente)
+                                {
+                                    <td>@elemento._cliente!._persona!.nombre</td>
+                                }
+                                @if (esCliente)
+                                {
+                                    <td>
+                                        @if (elemento.detallesVentas != null && elemento.detallesVentas.Any())
+                                        {
+                                            @string.Join(", ", elemento.detallesVentas
+                                                .Where(x => x._producto != null)
+                                                .Select(x => x._producto!.nombre))
+                                        }
+                                        else
+                                        {
+                                            <span>Sin producto</span>
+                                        }
+                                    </td>
+                                }
+                                <td>@elemento.fecha.ToShortDateString()</td>
+                                <td>@elemento.total.ToString("C")</td>
+                                @if (rol == "Administrador")
+                                {
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</form>

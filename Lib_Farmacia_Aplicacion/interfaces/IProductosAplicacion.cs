@@ -7,6 +7,7 @@ namespace Lib_Farmacia_Aplicacion.interfaces
 {
     public interface IProductosAplicacion
     {
-        List<Productos> ConsultarProductos(Productos entidad);
+        List<Productos> ConsultarProductos();
+        List<Productos> BuscarProducto(string nombre);
     }
 }
