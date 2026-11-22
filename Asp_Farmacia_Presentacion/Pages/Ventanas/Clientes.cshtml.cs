@@ -146,6 +146,7 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
             {
                 FormularioReceta = true;
                 ActualReceta = new Recetas();
+                ActualReceta.fechaEmision = DateTime.Today;   // ← agregar aquí
                 ListaClientes = this.IClientesPresentacion.ConsultarClientes();
                 OnPostBtConsultar();
             }
@@ -181,6 +182,7 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
                 FormularioReceta = true;
                 OnPostBtConsultar();
                 ActualReceta = ListaRecetas.FirstOrDefault(x => x.Id == Convert.ToInt32(data));
+                ActualReceta ??= new Recetas();               // ← agregar aquí
                 ListaClientes = this.IClientesPresentacion.ConsultarClientes();
             }
             catch (Exception ex)
