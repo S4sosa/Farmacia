@@ -73,7 +73,7 @@
                 <label>Cliente</label>
                 <select class="form-control"
                         asp-for="@Model.ActualReceta!.cliente"
-                        asp-items="@(new SelectList(Model.ListaClientes, "Id", "_persona.nombre"))"
+                        asp-items="@(new SelectList(Model.ListaClientes, "Id", "_persona.nombre"))">
                 </select>
                 <br />
 
