@@ -72,6 +72,23 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
+            // 1. Borrar primero lo que depende de la venta
+            var detalles = this.IConexion.DetallesVentas!
+                .Where(x => x.venta == entidad.Id)
+                .ToList();
+            this.IConexion.DetallesVentas!.RemoveRange(detalles);
+
+            var facturas = this.IConexion.Facturas!
+                .Where(x => x.venta == entidad.Id)
+                .ToList();
+            this.IConexion.Facturas!.RemoveRange(facturas);
+
+            // 2. Quitar las listas relacionadas para que EF no intente borrarlas dos veces
+            entidad.detallesVentas = null;
+            entidad.facturas = null;
+            entidad._cliente = null;
+
+            // 3. Borrar la venta
             this.IConexion.Ventas!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
