@@ -19,9 +19,9 @@ namespace Asp_Farmacia_Servicios.Controllers
 
         //-----------------Usuarios---------------------
         [HttpPost]
-        public Usuarios? BuscarPorCredenciales(String correo, String contrasena)
+        public Usuarios? BuscarPorCredenciales(CredencialesDto credenciales)
         {
-            return this.IUsuariosAplicacion.BuscarPorCredenciales(correo , contrasena);
+            return this.IUsuariosAplicacion.BuscarPorCredenciales(credenciales);
         }
 
         [HttpPost]

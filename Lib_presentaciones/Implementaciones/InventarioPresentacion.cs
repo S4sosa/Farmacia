@@ -1,4 +1,5 @@
 ﻿using Lib_Farmacia_Aplicacion.entidades;
+using Lib_Farmacia_Aplicacion.nucleo;
 using Lib_Farmacia_Presentacion.interfaces;
 
 namespace Lib_Farmacia_Presentacion.implementaciones
@@ -35,6 +36,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarProductos(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Productos>(
                 "Inventario/InsertarProducto",
                 entidad);
@@ -46,6 +50,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarProductos(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Productos>(
                 "Inventario/ActualizarProducto",
@@ -125,6 +132,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarLotes(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Lotes>(
                 "Inventario/InsertarLote",
                 entidad);
@@ -136,6 +146,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarLotes(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Lotes>(
                 "Inventario/ActualizarLote",
@@ -170,6 +183,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarInventarios(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Inventarios>(
                 "Inventario/InsertarInventario",
                 entidad);
@@ -181,6 +197,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarInventarios(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Inventarios>(
                 "Inventario/ActualizarInventario",

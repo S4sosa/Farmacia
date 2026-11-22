@@ -1,4 +1,5 @@
 ﻿using Lib_Farmacia_Aplicacion.entidades;
+using Lib_Farmacia_Aplicacion.nucleo;
 using Lib_Farmacia_Presentacion.interfaces;
 
 namespace Lib_Farmacia_Presentacion.implementaciones
@@ -26,6 +27,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarCargos(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Cargos>(
                 "Parametros/InsertarCargo",
                 entidad);
@@ -37,6 +41,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarCargos(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Cargos>(
                 "Parametros/ActualizarCargo",
@@ -71,6 +78,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarCategorias(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Categorias>(
                 "Parametros/InsertarCategoria",
                 entidad);
@@ -82,6 +92,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarCategorias(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Categorias>(
                 "Parametros/ActualizarCategoria",
@@ -116,6 +129,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarPresentaciones(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Presentaciones>(
                 "Parametros/InsertarPresentacion",
                 entidad);
@@ -127,6 +143,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarPresentaciones(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Presentaciones>(
                 "Parametros/ActualizarPresentacion",
@@ -161,6 +180,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarMetodosPagos(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<MetodosPagos>(
                 "Parametros/InsertarMetodoPago",
                 entidad);
@@ -172,6 +194,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarMetodosPagos(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<MetodosPagos>(
                 "Parametros/ActualizarMetodoPago",
@@ -206,6 +231,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarLaboratorios(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Laboratorios>(
                 "Parametros/InsertarLaboratorio",
                 entidad);
@@ -217,6 +245,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarLaboratorios(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Laboratorios>(
                 "Parametros/ActualizarLaboratorio",

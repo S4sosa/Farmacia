@@ -4,6 +4,6 @@ namespace Lib_Farmacia_Presentacion.interfaces
 {
     public interface IProductosPresentacion
     {
-        List<Productos> ConsultarProductos(Productos entidad);
+        List<Productos> ConsultarProductos();
     }
 }

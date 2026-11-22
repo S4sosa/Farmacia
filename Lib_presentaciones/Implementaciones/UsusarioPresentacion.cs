@@ -12,12 +12,11 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             this.IComunicaciones = IComunicaciones;
         }
 
-        public Usuarios? BuscarPorCredenciales(string correo, string contrasena)
+        public Usuarios? BuscarPorCredenciales(CredencialesDto credenciales)
         {
             var task = this.IComunicaciones.Ejecutar<Usuarios?>(
-                "Usuarios/BuscarPorCredenciales?correo=" + Uri.EscapeDataString(correo) +
-                "&contrasena=" + Uri.EscapeDataString(contrasena),
-                null!);
+                "Usuarios/BuscarPorCredenciales",
+                credenciales);
             task.Wait();
             return task.Result;
         }

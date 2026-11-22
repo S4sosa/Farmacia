@@ -1,4 +1,5 @@
 ﻿using Lib_Farmacia_Aplicacion.entidades;
+using Lib_Farmacia_Aplicacion.nucleo;
 using Lib_Farmacia_Presentacion.interfaces;
 
 namespace Lib_Farmacia_Presentacion.implementaciones
@@ -26,6 +27,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarVentas(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Ventas>(
                 "Ventas/InsertarVenta",
                 entidad);
@@ -37,6 +41,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarVentas(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Ventas>(
                 "Ventas/ActualizarVenta",
@@ -71,6 +78,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarDetallesVentas(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<DetallesVentas>(
                 "Ventas/InsertarDetallesVenta",
                 entidad);
@@ -82,6 +92,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarDetallesVentas(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<DetallesVentas>(
                 "Ventas/ActualizarDetallesVenta",
@@ -116,6 +129,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarFacturas(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Facturas>(
                 "Ventas/InsertarFactura",
                 entidad);
@@ -127,6 +143,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarFacturas(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Facturas>(
                 "Ventas/ActualizarFactura",

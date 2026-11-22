@@ -12,11 +12,11 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             this.IComunicaciones = IComunicaciones;
         }
 
-        public List<Productos> ConsultarProductos(Productos entidad)
+        public List<Productos> ConsultarProductos()
         {
             var task = this.IComunicaciones.Ejecutar<List<Productos>>(
                 "Productos/ConsultarProductos",
-                entidad);
+                null!);
             task.Wait();
             return task.Result;
         }

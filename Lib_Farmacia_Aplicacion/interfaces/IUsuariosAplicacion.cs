@@ -8,7 +8,7 @@ namespace Lib_Farmacia_Aplicacion.interfaces
     public interface IUsuariosAplicacion
     {
 
-        Usuarios? BuscarPorCredenciales(String correo, String contrasena);
+        Usuarios? BuscarPorCredenciales(CredencialesDto credenciales);
         Auditorias RegistrarAuditoria(Auditorias entidad);
 
     }

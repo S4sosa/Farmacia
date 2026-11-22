@@ -1,4 +1,5 @@
 ﻿using Lib_Farmacia_Aplicacion.entidades;
+using Lib_Farmacia_Aplicacion.nucleo;
 using Lib_Farmacia_Presentacion.interfaces;
 
 namespace Lib_Farmacia_Presentacion.implementaciones
@@ -26,6 +27,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             if (entidad.Id != 0)
                 throw new Exception("Ya se guardo");
 
+            if (Validaciones.ValidarSucursales(entidad))
+                throw new Exception("Falta informacion");
+
             var task = this.IComunicaciones.Ejecutar<Sucursales>(
                 "Sucursales/InsertarSucursal",
                 entidad);
@@ -37,6 +41,9 @@ namespace Lib_Farmacia_Presentacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (Validaciones.ValidarSucursales(entidad))
+                throw new Exception("Falta informacion");
 
             var task = this.IComunicaciones.Ejecutar<Sucursales>(
                 "Sucursales/ActualizarSucursal",

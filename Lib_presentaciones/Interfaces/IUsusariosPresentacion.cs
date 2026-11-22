@@ -4,7 +4,7 @@ namespace Lib_Farmacia_Presentacion.interfaces
 {
     public interface IUsuariosPresentacion
     {
-        Usuarios? BuscarPorCredenciales(string correo, string contrasena);
+        Usuarios? BuscarPorCredenciales(CredencialesDto credenciales);
         Auditorias RegistrarAuditoria(Auditorias entidad);
     }
 }

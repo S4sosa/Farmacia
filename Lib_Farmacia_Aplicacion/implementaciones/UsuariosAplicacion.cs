@@ -1,9 +1,10 @@
-﻿using Lib_Farmacia_Aplicacion.interfaces;
-using Lib_Farmacia_Aplicacion.entidades;
+﻿using Lib_Farmacia_Aplicacion.entidades;
+using Lib_Farmacia_Aplicacion.interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client.NativeInterop;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 
 namespace Lib_Farmacia_Aplicacion.implementaciones
 {
@@ -16,16 +17,15 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             this.IConexion = Iconexion;
         }
 
-        public Usuarios? BuscarPorCredenciales(String correo, String contrasena) //Estudiar este metodo
+        public Usuarios? BuscarPorCredenciales(CredencialesDto credenciales)
         {
             return this.IConexion.Usuarios!
-                .Include(x => x._rol) // se verifica el rol
+                .Include(x => x._rol)
                 .Include(x => x._cliente) // se traen los datos del cliente que incio sesion(si es cliente)
-                .FirstOrDefault(x => x.correo == correo && x.contrasena == contrasena); //se verifica correo y contraseña
-                                                                                        //-- Se verifican datos planos en la bd
-                                                                                        //pero para este proyecto lo dejaremos asi
-        }
-
+                .FirstOrDefault(x => x.correo == credenciales.correo &&         // se verifica correo y contraseña
+                                     x.contrasena == credenciales.contrasena);  //-- Se verifican datos planos en la bd
+        }                                                                       //pero para este proyecto lo dejaremos asi    
+        
         public Auditorias RegistrarAuditoria(Auditorias entidad)
         {
             entidad.fecha = DateTime.Now;
