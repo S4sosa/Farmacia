@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lib_presentaciones\Lib_Farmacia_Presentaciones.csproj" />
+    <ProjectReference Include="..\Lib_Farmacia_Presentacion\Lib_Farmacia_Presentacion.csproj" />
   </ItemGroup>
 
 </Project>

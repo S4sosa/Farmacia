@@ -21,7 +21,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
 
         public List<Compras> ConsultarCompras()
         {
-            return this.IConexion.Compras!.ToList();
+            return this.IConexion.Compras!
+                .Include(x => x._laboratorio)
+                .ToList();
         }
 
         public Compras InsertarCompra(Compras entidad)
