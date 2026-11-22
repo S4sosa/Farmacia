@@ -1,9 +1,12 @@
-﻿namespace Lib_Farmacia_Aplicacion.entidades
+﻿using System.Text.Json.Serialization;
+
+namespace Lib_Farmacia_Aplicacion.entidades
 {
     public class Facturas
     {
         public int Id { get; set; }
         public int venta { get; set; }
+        [JsonIgnore]
         [ForeignKey("venta")] public Ventas? _venta { get; set; }
         public int metodoPago { get; set; }
         [ForeignKey("metodoPago")] public MetodosPagos? _metodoPago { get; set; }
