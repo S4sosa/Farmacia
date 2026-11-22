@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Asp_Farmacia_Presentacion/Asp_Farmacia_Presentacion.csproj" Id="24eaa43c-4487-437e-8e41-881025a7e180" />
   <Project Path="Asp_Farmacia_Servicios/Asp_Farmacia_Servicios.csproj" Id="4229ea86-9407-4723-b5a6-01189867cb23" />
   <Project Path="Consola_Farmacia/Consola_Farmacia.csproj" />
   <Project Path="Lib_Farmacia_Aplicacion/Lib_Farmacia_Aplicacion.csproj" />
