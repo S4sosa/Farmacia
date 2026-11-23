@@ -1,0 +1,20 @@
+DISEÑO (Presentacion: Sesiones, CSS, Imagenes)
+
+ARCHIVOS NUEVOS
+  wwwroot/img/logo.svg        -> logo de la farmacia (barra, login y icono de la pestaña)
+  wwwroot/img/farmacia.svg    -> ilustracion del login y de la bienvenida
+
+ARCHIVOS MODIFICADOS (todos en Asp_Farmacia_Presentacion)
+  wwwroot/css/site.css               -> tema completo (colores en :root, barra, botones,
+                                        tablas, formularios, ventanas emergentes, login,
+                                        bienvenida, imagenes de productos)
+  wwwroot/js/site.js                 -> resalta en el menu la ventana actual
+  Pages/Shared/_Layout.cshtml        -> logo, fuente Nunito, usuario de la SESION con su rol
+                                        y boton "Salir" a la derecha
+  Pages/Shared/_Layout.cshtml.css    -> se quitaron estilos de la plantilla que chocaban
+  Pages/Index.cshtml                 -> login en tarjeta con imagen; bienvenida que muestra
+                                        el nombre y el rol guardados en la SESION y accesos rapidos
+  Pages/Ventanas/Inventario.cshtml   -> imagenes con clases CSS (se corrigio un style mal escrito)
+  Pages/Ventanas/Productos.cshtml    -> imagenes con clases CSS
+
+No cambia nada de la API ni de la base de datos.

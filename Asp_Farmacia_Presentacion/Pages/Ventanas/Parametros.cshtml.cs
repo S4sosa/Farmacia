@@ -1,4 +1,4 @@
-using Lib_Farmacia_Aplicacion.nucleo;
+﻿using Lib_Farmacia_Aplicacion.nucleo;
 using Lib_Farmacia_Presentacion.interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -35,7 +35,6 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
             new SelectListItem { Value = "Presentaciones", Text = "Presentaciones" },
             new SelectListItem { Value = "MetodosPagos", Text = "Métodos de Pago" },
             new SelectListItem { Value = "Laboratorios", Text = "Laboratorios" },
-            new SelectListItem { Value = "Roles", Text = "Roles" },
         };
 
         public void OnGet() { OnPostBtConsultar(); }
@@ -188,7 +187,6 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
                 "Presentaciones" => IParametrosPresentacion.ConsultarPresentaciones().Select(x => new ParametroItem { Id = x.Id, Nombre = x.nombre }).ToList(),
                 "MetodosPagos" => IParametrosPresentacion.ConsultarMetodosPagos().Select(x => new ParametroItem { Id = x.Id, Nombre = x.nombre }).ToList(),
                 "Laboratorios" => IParametrosPresentacion.ConsultarLaboratorios().Select(x => new ParametroItem { Id = x.Id, Nombre = x.nombre }).ToList(),
-                "Roles" => IParametrosPresentacion.ConsultarRoles().Select(x => new ParametroItem { Id = x.Id, Nombre = x.nombre }).ToList(),
                 _ => new List<ParametroItem>()
             };
         }
