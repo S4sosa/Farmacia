@@ -1,4 +1,6 @@
-﻿namespace Lib_Farmacia_Aplicacion.entidades
+﻿using System.Text.Json.Serialization;
+
+namespace Lib_Farmacia_Aplicacion.entidades
 {
     public class Ventas
     {
@@ -8,6 +10,7 @@
         public DateTime fecha { get; set; }
         public Decimal total { get; set; }
         public List<DetallesVentas>? detallesVentas { get; set; }
+        [JsonIgnore]
         public List<Facturas>? facturas { get; set; }
     }
 }

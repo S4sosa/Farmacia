@@ -159,6 +159,24 @@ namespace Asp_Farmacia_Servicios.Controllers
         {
             return this.IParametrosAplicacion.ConsultarRoles();
         }
+
+        [HttpPost]
+        public Roles InsertarRol(Roles entidad)
+        {
+            return this.IParametrosAplicacion.InsertarRol(entidad);
+        }
+
+        [HttpPost]
+        public Roles ActualizarRol(Roles entidad)
+        {
+            return this.IParametrosAplicacion.ActualizarRol(entidad);
+        }
+
+        [HttpPost]
+        public Roles BorrarRol(Roles entidad)
+        {
+            return this.IParametrosAplicacion.BorrarRol(entidad);
+        }
         
     }
 }

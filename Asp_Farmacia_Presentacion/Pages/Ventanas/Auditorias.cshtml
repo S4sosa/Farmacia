@@ -1,0 +1,49 @@
+﻿@page
+@model AuditoriasModel
+@{
+    ViewData["Title"] = "Auditorías";
+}
+<form method="post" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <h1 class="display-4">Auditorías</h1>
+        <div>
+            <input type="submit"
+                   value="Consultar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtConsultar" />
+            <input placeholder="Filtrar por correo"
+                   asp-for="@Model.FiltroCorreo" />
+        </div>
+
+        @if (ViewData.ContainsKey("Mensaje"))
+        {
+            @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+        }
+
+        @if (!Model.Formulario)
+        {
+            <br /><br />
+            <div class="containers_vn panel panel-default">
+                <table class="tb_data table table-striped table-bordered table-hover">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Correo</th>
+                        <th>Resultado</th>
+                    </tr>
+                    @if (Model != null && Model.Lista != null)
+                    {
+                        foreach (var elemento in Model.Filtradas)
+                        {
+                            <tr>
+                                <td>@elemento.fecha.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                <td>@elemento.correo</td>
+                                <td>@(elemento.exitoso ? "Exitoso" : "Fallido")</td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</form>

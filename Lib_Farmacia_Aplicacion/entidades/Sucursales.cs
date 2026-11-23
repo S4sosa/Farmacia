@@ -1,4 +1,6 @@
-﻿namespace Lib_Farmacia_Aplicacion.entidades
+﻿using System.Text.Json.Serialization;
+
+namespace Lib_Farmacia_Aplicacion.entidades
 {
     public class Sucursales
     {
@@ -7,6 +9,7 @@
         public string? direccion { get; set; }
         public string? telefono { get; set; }
         public bool activo { get; set; }
+        [JsonIgnore]
         public List<Inventarios>? inventarios { get; set; }
     }
 }

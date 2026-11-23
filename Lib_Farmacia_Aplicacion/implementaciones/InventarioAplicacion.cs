@@ -111,6 +111,12 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
+            if (this.IConexion.DetallesRecetas!.Any(x => x.medicamento == entidad.Id))
+                throw new Exception("No se puede borrar: el medicamento está en recetas");
+
+            entidad._producto = null;
+            entidad._presentacion = null;
+            entidad.detallesRecetas = null;
             this.IConexion.Medicamentos!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;

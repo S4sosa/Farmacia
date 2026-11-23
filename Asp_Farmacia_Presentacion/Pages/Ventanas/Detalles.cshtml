@@ -1,0 +1,399 @@
+﻿@page
+@model DetallesModel
+@{
+    ViewData["Title"] = "Detalles";
+}
+<form method="post" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <h1 class="display-4">Detalles</h1>
+        <div>
+            <input type="submit"
+                   id="btConsultar"
+                   value="Consultar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtConsultar" />
+            @if (!Model.SoloLectura)
+            {
+                <input type="submit"
+                       value="Nuevo"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtNuevo" />
+                <input type="submit"
+                       value="Guardar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtGuardar" />
+            }
+
+            &nbsp;&nbsp;
+            <br />
+            <br />
+            <label><h3>Tabla:</h3></label>
+            <select id="nmTipo"
+                    class="form-control"
+                    onchange="document.getElementById('btConsultar').click()"
+                    asp-for="@Model.TipoSeleccionado"
+                    asp-items="@(new SelectList(Model.Tipos, "Value", "Text"))">
+            </select>
+        </div>
+
+        @if (ViewData.ContainsKey("Mensaje"))
+        {
+            @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+        }
+
+        @if (Model.TipoSeleccionado == "DetallesCompras")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualDetallesCompras!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Detalle de compra</h3>
+
+                    <label>Compra</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualDetallesCompras!.compra"
+                            asp-items="@Model.OpcionesCompras">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Producto</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualDetallesCompras!.producto"
+                            asp-items="@Model.OpcionesProductos">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Cantidad</label>
+                    <input asp-for="@Model.ActualDetallesCompras!.cantidad" class="form-control" type="number" min="1" />
+                    <br />
+                    <label>Precio unitario</label>
+                    <input asp-for="@Model.ActualDetallesCompras!.precio" class="form-control" />
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar el detalle de @Model.NombreProductos(Model.ActualDetallesCompras?.producto) de la compra #@Model.ActualDetallesCompras?.compra?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Compra</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosDetallesCompras)
+                        {
+                            <tr>
+                                    <td>@Model.NombreCompras(elemento.compra)</td>
+                                    <td>@Model.NombreProductos(elemento.producto)</td>
+                                    <td>@elemento.cantidad</td>
+                                    <td>@elemento.precio.ToString("C")</td>
+                                    <td>@((elemento.precio * elemento.cantidad).ToString("C"))</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+
+        @if (Model.TipoSeleccionado == "DetallesVentas")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualDetallesVentas!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Detalle de venta</h3>
+
+                    <label>Venta</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualDetallesVentas!.venta"
+                            asp-items="@Model.OpcionesVentas">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Producto</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualDetallesVentas!.producto"
+                            asp-items="@Model.OpcionesProductos">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Cantidad</label>
+                    <input asp-for="@Model.ActualDetallesVentas!.cantidad" class="form-control" type="number" min="1" />
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar el detalle de @Model.NombreProductos(Model.ActualDetallesVentas?.producto) de la venta #@Model.ActualDetallesVentas?.venta?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Venta</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosDetallesVentas)
+                        {
+                            <tr>
+                                    <td>@Model.NombreVentas(elemento.venta)</td>
+                                    <td>@Model.NombreProductos(elemento.producto)</td>
+                                    <td>@elemento.cantidad</td>
+                                    <td>@Model.PrecioProducto(elemento.producto).ToString("C")</td>
+                                    <td>@((Model.PrecioProducto(elemento.producto) * elemento.cantidad).ToString("C"))</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+
+        @if (Model.TipoSeleccionado == "DetallesRecetas")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualDetallesRecetas!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Detalle de receta</h3>
+
+                    <label>Receta</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualDetallesRecetas!.receta"
+                            asp-items="@Model.OpcionesRecetas">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Medicamento</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualDetallesRecetas!.medicamento"
+                            asp-items="@Model.OpcionesMedicamentos">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Cantidad</label>
+                    <input asp-for="@Model.ActualDetallesRecetas!.cantidad" class="form-control" type="number" min="1" />
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar @Model.NombreMedicamentos(Model.ActualDetallesRecetas?.medicamento) de la receta #@Model.ActualDetallesRecetas?.receta?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Receta</th>
+                            <th>Medicamento</th>
+                            <th>Cantidad</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosDetallesRecetas)
+                        {
+                            <tr>
+                                    <td>@Model.NombreRecetas(elemento.receta)</td>
+                                    <td>@Model.NombreMedicamentos(elemento.medicamento)</td>
+                                    <td>@elemento.cantidad</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+
+        @if (Model.TipoSeleccionado == "Facturas")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualFacturas!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Factura</h3>
+
+                    <label>Venta</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualFacturas!.venta"
+                            asp-items="@Model.OpcionesVentas">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Método de pago</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualFacturas!.metodoPago"
+                            asp-items="@Model.OpcionesMetodosPagos">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar la factura #@Model.ActualFacturas?.Id?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Factura</th>
+                            <th>Venta</th>
+                            <th>Total</th>
+                            <th>Método de pago</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosFacturas)
+                        {
+                            <tr>
+                                    <td>#@elemento.Id</td>
+                                    <td>@Model.NombreVentas(elemento.venta)</td>
+                                    <td>@Model.TotalVenta(elemento.venta).ToString("C")</td>
+                                    <td>@Model.NombreMetodosPagos(elemento.metodoPago)</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+    </div>
+</form>

@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model ParametrosModel
 @{
     ViewData["Title"] = "Parámetros";
@@ -9,6 +9,7 @@
         <h1 class="display-4">Parámetros</h1>
         <div>
             <input type="submit"
+                   id="btConsultar"
                    value="Consultar"
                    class="btn btn-secondary"
                    asp-page-handler="BtConsultar" />
@@ -27,6 +28,7 @@
             <label><h3>Tabla:</h3></label>
             <select id="nmTipo"
                     class="form-control"
+                    onchange="document.getElementById('btConsultar').click()"
                     asp-for="@Model.TipoSeleccionado"
                     asp-items="@(new SelectList(Model.Tipos, "Value", "Text"))">
             </select>

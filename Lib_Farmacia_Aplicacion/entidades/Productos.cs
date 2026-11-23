@@ -12,8 +12,11 @@ namespace Lib_Farmacia_Aplicacion.entidades
         [ForeignKey("categoria")] public Categorias? _categoria { get; set; }
         [JsonIgnore]
         public List<DetallesVentas>? detallesVentas { get; set; }
+        [JsonIgnore]
         public List<Inventarios>? inventarios { get; set; }
+        [JsonIgnore]
         public List<Lotes>? lotes { get; set; }
+        [JsonIgnore]
         public List<Medicamentos>? medicamentos { get; set; }
         [JsonIgnore]
         public List<DetallesCompras>? detallesCompras { get; set; }

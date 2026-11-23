@@ -1,0 +1,296 @@
+﻿@page
+@model AlmacenModel
+@{
+    ViewData["Title"] = "Almacén";
+}
+<form method="post" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <h1 class="display-4">Almacén</h1>
+        <div>
+            <input type="submit"
+                   id="btConsultar"
+                   value="Consultar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtConsultar" />
+            @if (!Model.SoloLectura)
+            {
+                <input type="submit"
+                       value="Nuevo"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtNuevo" />
+                <input type="submit"
+                       value="Guardar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtGuardar" />
+            }
+
+            &nbsp;&nbsp;
+            <br />
+            <br />
+            <label><h3>Tabla:</h3></label>
+            <select id="nmTipo"
+                    class="form-control"
+                    onchange="document.getElementById('btConsultar').click()"
+                    asp-for="@Model.TipoSeleccionado"
+                    asp-items="@(new SelectList(Model.Tipos, "Value", "Text"))">
+            </select>
+        </div>
+
+        @if (ViewData.ContainsKey("Mensaje"))
+        {
+            @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+        }
+
+        @if (Model.TipoSeleccionado == "Medicamentos")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualMedicamentos!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Medicamento</h3>
+
+                    <label>Producto</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualMedicamentos!.producto"
+                            asp-items="@Model.OpcionesProductos">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Presentación</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualMedicamentos!.presentacion"
+                            asp-items="@Model.OpcionesPresentaciones">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar el medicamento: @Model.NombreProductos(Model.ActualMedicamentos?.producto)?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Presentación</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosMedicamentos)
+                        {
+                            <tr>
+                                    <td>@Model.NombreProductos(elemento.producto)</td>
+                                    <td>@Model.NombrePresentaciones(elemento.presentacion)</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+
+        @if (Model.TipoSeleccionado == "Lotes")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualLotes!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Lote</h3>
+
+                    <label>Producto</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualLotes!.producto"
+                            asp-items="@Model.OpcionesProductos">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Número de lote</label>
+                    <input asp-for="@Model.ActualLotes!.numLote" class="form-control" />
+                    <br />
+                    <label>Fecha de vencimiento</label>
+                    <input asp-for="@Model.ActualLotes!.fechaVencimiento" class="form-control" type="date" />
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar el lote: @Model.ActualLotes?.numLote?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Lote</th>
+                            <th>Vence</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosLotes)
+                        {
+                            <tr>
+                                    <td>@Model.NombreProductos(elemento.producto)</td>
+                                    <td>@elemento.numLote</td>
+                                    <td>@elemento.fechaVencimiento.ToShortDateString()</td>
+                                    <td>@(elemento.fechaVencimiento.Date <= DateTime.Today ? "Vencido" : elemento.fechaVencimiento.Date <= DateTime.Today.AddDays(30) ? "Por vencer" : "Vigente")</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+
+        @if (Model.TipoSeleccionado == "Inventarios")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualInventarios!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Existencia</h3>
+
+                    <label>Producto</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualInventarios!.producto"
+                            asp-items="@Model.OpcionesProductos">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Sucursal</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualInventarios!.sucursal"
+                            asp-items="@Model.OpcionesSucursales">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Cantidad</label>
+                    <input asp-for="@Model.ActualInventarios!.cantidad" class="form-control" type="number" min="1" />
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar la existencia de @Model.NombreProductos(Model.ActualInventarios?.producto) en @Model.NombreSucursales(Model.ActualInventarios?.sucursal)?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Sucursal</th>
+                            <th>Cantidad</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosInventarios)
+                        {
+                            <tr>
+                                    <td>@Model.NombreProductos(elemento.producto)</td>
+                                    <td>@Model.NombreSucursales(elemento.sucursal)</td>
+                                    <td>@elemento.cantidad</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+    </div>
+</form>

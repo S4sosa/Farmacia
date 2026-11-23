@@ -1,0 +1,25 @@
+VENTANAS NUEVAS (Asp_Farmacia_Presentacion/Pages/Ventanas) - solo Administrador
+Cada una funciona como Parametros: se elige la tabla en "Tabla:".
+  Almacen.cshtml   -> Medicamentos, Lotes, Inventario por Sucursal
+  Detalles.cshtml  -> Detalles de Compras, Detalles de Ventas, Detalles de Recetas, Facturas
+  Seguridad.cshtml -> Usuarios, Roles, Auditorias (solo consulta, con filtro por correo)
+
+Si ya habias copiado la version anterior, BORRA estos archivos de Pages/Ventanas
+(ya no se usan): Medicamentos, Lotes, Inventarios, DetallesCompras, DetallesVentas,
+DetallesRecetas, Facturas, Usuarios, Roles, Auditorias (.cshtml y .cshtml.cs de cada uno).
+
+ARCHIVOS MODIFICADOS
+  Asp_Farmacia_Presentacion/Pages/Shared/_Layout.cshtml      -> enlaces Almacen, Detalles, Seguridad
+  Asp_Farmacia_Presentacion/Pages/Ventanas/Parametros.cshtml -> al cambiar la tabla se consulta sola
+  Asp_Farmacia_Servicios/Controllers/UsuariosController.cs   -> Consultar/Insertar/Actualizar/Borrar Usuario, ConsultarAuditorias
+  Asp_Farmacia_Servicios/Controllers/ParametrosController.cs -> Insertar/Actualizar/Borrar Rol
+  Lib_Farmacia_Aplicacion/interfaces/IUsuariosAplicacion.cs, IParametrosAplicacion.cs
+  Lib_Farmacia_Aplicacion/implementaciones/UsuariosAplicacion.cs   -> metodos de usuarios y auditorias
+  Lib_Farmacia_Aplicacion/implementaciones/ParametrosAplicacion.cs -> metodos de roles
+  Lib_Farmacia_Aplicacion/implementaciones/InventarioAplicacion.cs -> BorrarMedicamento no borra si esta en recetas
+  Lib_Farmacia_Aplicacion/entidades: Productos, Presentaciones, MetodosPagos, Sucursales, Medicamentos, Ventas
+      -> [JsonIgnore] en las listas "de regreso" (evita el ciclo infinito / "Error Comunicacion")
+  Lib_Farmacia_Presentacion/Interfaces/IUsusariosPresentacion.cs, IParametrosPresentacion.cs
+  Lib_Farmacia_Presentacion/Implementaciones/UsusarioPresentacion.cs, ParametrosPresentacion.cs
+
+No se cambio la base de datos: no hace falta ejecutar ningun SQL.

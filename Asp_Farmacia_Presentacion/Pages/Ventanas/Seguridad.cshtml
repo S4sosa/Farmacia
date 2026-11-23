@@ -1,0 +1,243 @@
+﻿@page
+@model SeguridadModel
+@{
+    ViewData["Title"] = "Seguridad";
+}
+<form method="post" enctype="multipart/form-data">
+
+    <div class="text-center">
+        <h1 class="display-4">Seguridad</h1>
+        <div>
+            <input type="submit"
+                   id="btConsultar"
+                   value="Consultar"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtConsultar" />
+            @if (!Model.SoloLectura)
+            {
+                <input type="submit"
+                       value="Nuevo"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtNuevo" />
+                <input type="submit"
+                       value="Guardar"
+                       class="btn btn-secondary"
+                       asp-page-handler="BtGuardar" />
+            }
+
+            &nbsp;&nbsp;
+            <br />
+            <br />
+            <label><h3>Tabla:</h3></label>
+            <select id="nmTipo"
+                    class="form-control"
+                    onchange="document.getElementById('btConsultar').click()"
+                    asp-for="@Model.TipoSeleccionado"
+                    asp-items="@(new SelectList(Model.Tipos, "Value", "Text"))">
+            </select>
+        </div>
+
+        @if (ViewData.ContainsKey("Mensaje"))
+        {
+            @await Html.PartialAsync("../Emergentes/Mensajes.cshtml");
+        }
+
+        @if (Model.TipoSeleccionado == "Usuarios")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualUsuarios!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Usuario</h3>
+
+                    <label>Nombre</label>
+                    <input asp-for="@Model.ActualUsuarios!.nombre" class="form-control" />
+                    <br />
+                    <label>Correo</label>
+                    <input asp-for="@Model.ActualUsuarios!.correo" class="form-control" type="email" />
+                    <br />
+                    <label>Contraseña</label>
+                    <input asp-for="@Model.ActualUsuarios!.contrasena" class="form-control" type="password" placeholder="@(Model.ActualUsuarios?.Id > 0 ? "Dejar vacío para no cambiarla" : "")" />
+                    <br />
+                    <label>Rol</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualUsuarios!.rol"
+                            asp-items="@Model.OpcionesRoles">
+                        <option value="0">-- Seleccione --</option>
+                    </select>
+                    <br />
+                    <label>Cliente (solo para usuarios de rol General)</label>
+                    <select class="form-control"
+                            asp-for="@Model.ActualUsuarios!.cliente"
+                            asp-items="@Model.OpcionesClientes">
+                        <option value="">(Ninguno)</option>
+                    </select>
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar el usuario: @Model.ActualUsuarios?.correo?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Cliente</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosUsuarios)
+                        {
+                            <tr>
+                                    <td>@elemento.nombre</td>
+                                    <td>@elemento.correo</td>
+                                    <td>@Model.NombreRoles(elemento.rol)</td>
+                                    <td>@Model.NombreClientes(elemento.cliente)</td>
+                                    <td>
+                                        <input type="submit"
+                                               value="Editar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtEditar"
+                                               asp-route-data="@elemento.Id" />
+                                        <input type="submit"
+                                               value="Borrar"
+                                               class="btn btn-secondary"
+                                               asp-page-handler="BtPregBorrar"
+                                               asp-route-data="@elemento.Id" />
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+
+        @if (Model.TipoSeleccionado == "Roles")
+        {
+            @if (Model.Formulario || Model.Borrar)
+            {
+                <input type="hidden" asp-for="@Model.ActualRoles!.Id" />
+            }
+
+            @if (Model.Formulario)
+            {
+                <div>
+                    <h3>Rol</h3>
+
+                    <label>Nombre</label>
+                    <input asp-for="@Model.ActualRoles!.nombre" class="form-control" />
+                    <br />
+                </div>
+            }
+
+            @if (Model.Borrar)
+            {
+                <div class="popup">
+                    <div class="pp_del_inner">
+                        <h3>Mensaje</h3>
+                        <h4>¿Quiere borrar el rol: @Model.ActualRoles?.nombre?</h4>
+                        <input type="submit"
+                               value="Cancelar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtConsultar" />
+                        <input type="submit"
+                               value="Borrar"
+                               class="btn btn-secondary"
+                               asp-page-handler="BtBorrar" />
+                    </div>
+                </div>
+            }
+
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Acción</th>
+                        </tr>
+                        @foreach (var elemento in Model.DatosRoles)
+                        {
+                            <tr>
+                                    <td>@elemento.Id</td>
+                                    <td>@elemento.nombre</td>
+                                    <td>
+                                        @if (Model.EsRolDelSistema(elemento.nombre))
+                                        {
+                                            <span class="text-muted">Rol del sistema</span>
+                                        }
+                                        else
+                                        {
+                                            <input type="submit"
+                                                   value="Editar"
+                                                   class="btn btn-secondary"
+                                                   asp-page-handler="BtEditar"
+                                                   asp-route-data="@elemento.Id" />
+                                            <input type="submit"
+                                                   value="Borrar"
+                                                   class="btn btn-secondary"
+                                                   asp-page-handler="BtPregBorrar"
+                                                   asp-route-data="@elemento.Id" />
+                                        }
+                                    </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+
+        @if (Model.TipoSeleccionado == "Auditorias")
+        {
+            <br />
+            <input placeholder="Filtrar por correo" asp-for="@Model.FiltroCorreo" />
+            @if (!Model.Formulario)
+            {
+                <br /><br />
+                <div class="containers_vn panel panel-default">
+                    <table class="tb_data table table-striped table-bordered table-hover">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Correo</th>
+                            <th>Resultado</th>
+                        </tr>
+                        @foreach (var elemento in Model.AuditoriasFiltradas)
+                        {
+                            <tr>
+                                    <td>@elemento.fecha.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                                    <td>@elemento.correo</td>
+                                    <td>@(elemento.exitoso ? "Exitoso" : "Fallido")</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        }
+    </div>
+</form>

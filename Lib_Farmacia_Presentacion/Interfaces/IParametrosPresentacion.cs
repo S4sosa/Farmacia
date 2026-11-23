@@ -25,5 +25,8 @@ namespace Lib_Farmacia_Presentacion.interfaces
         Laboratorios ActualizarLaboratorio(Laboratorios entidad);
         Laboratorios BorrarLaboratorio(Laboratorios entidad);
         List<Roles> ConsultarRoles();
+        Roles InsertarRol(Roles entidad);
+        Roles ActualizarRol(Roles entidad);
+        Roles BorrarRol(Roles entidad);
     }
 }

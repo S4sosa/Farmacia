@@ -276,5 +276,41 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             task.Wait();
             return task.Result;
         }
+
+        public Roles InsertarRol(Roles entidad)
+        {
+            if (entidad.Id != 0)
+                throw new Exception("Ya se guardo");
+
+            var task = this.IComunicaciones.Ejecutar<Roles>(
+                "Parametros/InsertarRol",
+                entidad);
+            task.Wait();
+            return task.Result;
+        }
+
+        public Roles ActualizarRol(Roles entidad)
+        {
+            if (entidad.Id == 0)
+                throw new Exception("No se ha guardado");
+
+            var task = this.IComunicaciones.Ejecutar<Roles>(
+                "Parametros/ActualizarRol",
+                entidad);
+            task.Wait();
+            return task.Result;
+        }
+
+        public Roles BorrarRol(Roles entidad)
+        {
+            if (entidad.Id == 0)
+                throw new Exception("No se ha guardado");
+
+            var task = this.IComunicaciones.Ejecutar<Roles>(
+                "Parametros/BorrarRol",
+                entidad);
+            task.Wait();
+            return task.Result;
+        }
     }
 }

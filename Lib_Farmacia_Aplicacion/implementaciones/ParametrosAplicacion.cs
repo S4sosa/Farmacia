@@ -253,6 +253,62 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             return this.IConexion.Roles!.ToList();
         }
+
+        // Los roles "Administrador" y "General" los usa el login y el menu,
+        // por eso no se pueden renombrar ni borrar.
+        private static bool EsRolDelSistema(string? nombre)
+        {
+            return nombre == "Administrador" || nombre == "General";
+        }
+
+        public Roles InsertarRol(Roles entidad)
+        {
+            if (entidad.Id != 0)
+                throw new Exception("Ya se guardó");
+            if (Validaciones.ValidarRoles(entidad))
+                throw new Exception("Falta Información");
+
+            this.IConexion.Roles!.Add(entidad);
+            this.IConexion.SaveChanges();
+            return entidad;
+        }
+
+        public Roles ActualizarRol(Roles entidad)
+        {
+            if (entidad.Id == 0)
+                throw new Exception("No se ha guardado");
+            if (Validaciones.ValidarRoles(entidad))
+                throw new Exception("Falta Información");
+
+            var rol = this.IConexion.Roles!.Find(entidad.Id);
+            if (rol == null)
+                throw new Exception("El rol no existe");
+            if (EsRolDelSistema(rol.nombre))
+                throw new Exception("No se puede modificar un rol del sistema");
+
+            rol.nombre = entidad.nombre;
+            this.IConexion.Entry(rol).State = EntityState.Modified;
+            this.IConexion.SaveChanges();
+            return rol;
+        }
+
+        public Roles BorrarRol(Roles entidad)
+        {
+            if (entidad.Id == 0)
+                throw new Exception("No se ha guardado");
+
+            var rol = this.IConexion.Roles!.Find(entidad.Id);
+            if (rol == null)
+                throw new Exception("El rol no existe");
+            if (EsRolDelSistema(rol.nombre))
+                throw new Exception("No se puede borrar un rol del sistema");
+            if (this.IConexion.Usuarios!.Any(x => x.rol == rol.Id))
+                throw new Exception("No se puede borrar: hay usuarios con este rol");
+
+            this.IConexion.Roles!.Remove(rol);
+            this.IConexion.SaveChanges();
+            return rol;
+        }
         //Solo con Consultar Porque no se gestionan desde el front, los dos roles(Admi y Cliente) ya estan en la BD 
     }
 }

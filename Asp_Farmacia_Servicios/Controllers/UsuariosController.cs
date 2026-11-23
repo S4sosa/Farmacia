@@ -30,5 +30,37 @@ namespace Asp_Farmacia_Servicios.Controllers
             return this.IUsuariosAplicacion.RegistrarAuditoria(entidad);
         }
 
+        [HttpPost]
+        public List<Usuarios> ConsultarUsuarios()
+        {
+            return this.IUsuariosAplicacion.ConsultarUsuarios();
+        }
+
+        [HttpPost]
+        public Usuarios InsertarUsuario(Usuarios entidad)
+        {
+            return this.IUsuariosAplicacion.InsertarUsuario(entidad);
+        }
+
+        [HttpPost]
+        public Usuarios ActualizarUsuario(Usuarios entidad)
+        {
+            return this.IUsuariosAplicacion.ActualizarUsuario(entidad);
+        }
+
+        [HttpPost]
+        public Usuarios BorrarUsuario(Usuarios entidad)
+        {
+            return this.IUsuariosAplicacion.BorrarUsuario(entidad);
+        }
+
+
+        //-----------------Auditorias---------------------
+        [HttpPost]
+        public List<Auditorias> ConsultarAuditorias()
+        {
+            return this.IUsuariosAplicacion.ConsultarAuditorias();
+        }
+
     }
 }
