@@ -4,10 +4,6 @@ Cada una funciona como Parametros: se elige la tabla en "Tabla:".
   Detalles.cshtml  -> Detalles de Compras, Detalles de Ventas, Detalles de Recetas, Facturas
   Seguridad.cshtml -> Usuarios, Roles, Auditorias (solo consulta, con filtro por correo)
 
-Si ya habias copiado la version anterior, BORRA estos archivos de Pages/Ventanas
-(ya no se usan): Medicamentos, Lotes, Inventarios, DetallesCompras, DetallesVentas,
-DetallesRecetas, Facturas, Usuarios, Roles, Auditorias (.cshtml y .cshtml.cs de cada uno).
-
 ARCHIVOS MODIFICADOS
   Asp_Farmacia_Presentacion/Pages/Shared/_Layout.cshtml      -> enlaces Almacen, Detalles, Seguridad
   Asp_Farmacia_Presentacion/Pages/Ventanas/Parametros.cshtml -> al cambiar la tabla se consulta sola
