@@ -75,6 +75,7 @@ CREATE TABLE [Productos] (
     [Id] INT IDENTITY(1,1) PRIMARY KEY,
     [Nombre] VARCHAR(150) NOT NULL,
     [Precio] DECIMAL(10,2) NOT NULL,
+    [Imagen] VARCHAR(200) NULL,
     [Categoria] INT NOT NULL REFERENCES [Categorias]([Id])
 );
 

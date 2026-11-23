@@ -10,12 +10,15 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
     {
         private IInventarioPresentacion IInventarioPresentacion;
         private IParametrosPresentacion IParametrosPresentacion;
+        private IWebHostEnvironment IWebHostEnvironment;
 
         public InventarioModel(IInventarioPresentacion IInventarioPresentacion,
-            IParametrosPresentacion IParametrosPresentacion)
+            IParametrosPresentacion IParametrosPresentacion,
+            IWebHostEnvironment IWebHostEnvironment)
         {
             this.IInventarioPresentacion = IInventarioPresentacion;
             this.IParametrosPresentacion = IParametrosPresentacion;
+            this.IWebHostEnvironment = IWebHostEnvironment;
             this.Filtro = new Productos();
         }
 
@@ -25,8 +28,7 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
         [BindProperty] public Productos? Filtro { get; set; }
         [BindProperty] public bool Formulario { get; set; } = false;
         [BindProperty] public bool Borrar { get; set; } = false;
-
-        public void OnGet() { OnPostBtConsultar(); }
+        [BindProperty] public IFormFile? ArchivoImagen { get; set; }
 
         public void OnPostBtConsultar()
         {
@@ -69,6 +71,26 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
         {
             try
             {
+                // Si se eligió una imagen, guardarla en wwwroot/imagenes
+                if (ArchivoImagen != null && ArchivoImagen.Length > 0)
+                {
+                    var extension = Path.GetExtension(ArchivoImagen.FileName).ToLower();
+                    var permitidas = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                    if (!permitidas.Contains(extension))
+                        throw new Exception("Solo se permiten imágenes");
+
+                    var nombreArchivo = Guid.NewGuid().ToString() + extension;
+                    var carpeta = Path.Combine(this.IWebHostEnvironment.WebRootPath, "imagenes");
+                    Directory.CreateDirectory(carpeta);
+
+                    using (var stream = new FileStream(Path.Combine(carpeta, nombreArchivo), FileMode.Create))
+                    {
+                        ArchivoImagen.CopyTo(stream);
+                    }
+
+                    Actual!.imagen = nombreArchivo;
+                }
+
                 if (Actual!.Id == 0)
                     Actual = this.IInventarioPresentacion.InsertarProducto(Actual!);
                 else

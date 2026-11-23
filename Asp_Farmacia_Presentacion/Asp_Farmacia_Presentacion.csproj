@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Lib_Farmacia_Presentacion\Lib_Farmacia_Presentacion.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\imagenes\" />
+  </ItemGroup>
+
 </Project>

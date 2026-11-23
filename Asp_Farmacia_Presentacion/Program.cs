@@ -27,6 +27,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();      // ← agregar esta línea
 app.UseRouting();
 app.UseSession(); // Agregar esta línea para habilitar el uso de sesiones, util en el login.
 app.UseAuthorization();
