@@ -8,7 +8,7 @@
             if (ViewData == null)
                 return;
 
-            var mensaje = ex.ToString();
+            var mensaje = ex.GetBaseException().Message;
             if (mensaje.Length >= 100)
                 mensaje = mensaje.Substring(0, 100);
 

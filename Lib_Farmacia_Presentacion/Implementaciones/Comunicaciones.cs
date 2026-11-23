@@ -20,7 +20,16 @@ namespace Lib_Farmacia_Presentacion.implementaciones
             var message = await cliente_http.PostAsync(url, body);
 
             if (!message.IsSuccessStatusCode)
-                throw new Exception("Error Comunicacion");
+            {
+                // Leer el mensaje de error que mandó la API
+                var error = await message.Content.ReadAsStringAsync();
+                var primeraLinea = error.Split('\n')[0].Trim();   // ej: "System.Exception: No se puede borrar..."
+                var indice = primeraLinea.IndexOf(": ");
+                if (indice >= 0)
+                    primeraLinea = primeraLinea.Substring(indice + 2);
+
+                throw new Exception(string.IsNullOrEmpty(primeraLinea) ? "Error Comunicacion" : primeraLinea);
+            }
 
             var respuesta = await message.Content.ReadAsStringAsync();
             cliente_http.Dispose();

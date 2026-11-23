@@ -55,6 +55,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
+            if (this.IConexion.Empleados!.Any(x => x.cargo == entidad.Id))
+                throw new Exception("No se puede borrar: hay empleados con este cargo");
+
             this.IConexion.Cargos!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
@@ -97,6 +100,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (this.IConexion.Productos!.Any(x => x.categoria == entidad.Id))
+                throw new Exception("No se puede borrar: hay productos con esta categoría");
 
             this.IConexion.Categorias!.Remove(entidad);
             this.IConexion.SaveChanges();
@@ -142,6 +148,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
+            if (this.IConexion.Medicamentos!.Any(x => x.presentacion == entidad.Id))
+                throw new Exception("No se puede borrar: hay medicamentos con esta presentación");
+
             this.IConexion.Presentaciones!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
@@ -185,6 +194,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
+            if (this.IConexion.Facturas!.Any(x => x.metodoPago == entidad.Id))
+                throw new Exception("No se puede borrar: hay facturas con este método de pago");
+
             this.IConexion.MetodosPagos!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
@@ -226,6 +238,9 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
+
+            if (this.IConexion.Compras!.Any(x => x.laboratorio == entidad.Id))
+                throw new Exception("No se puede borrar: hay compras de este laboratorio");
 
             this.IConexion.Laboratorios!.Remove(entidad);
             this.IConexion.SaveChanges();

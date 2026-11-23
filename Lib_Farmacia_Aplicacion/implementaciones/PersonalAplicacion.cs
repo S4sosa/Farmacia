@@ -54,9 +54,21 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
-            this.IConexion.Personas!.Remove(entidad);
+            // ¿La persona sigue siendo empleado o cliente?
+            bool enUso =
+                this.IConexion.Empleados!.Any(x => x.persona == entidad.Id) ||
+                this.IConexion.Clientes!.Any(x => x.persona == entidad.Id);
+
+            if (enUso)
+                return entidad;   // se conserva: todavía la usa otro registro
+
+            var persona = this.IConexion.Personas!.Find(entidad.Id);
+            if (persona == null)
+                return entidad;
+
+            this.IConexion.Personas!.Remove(persona);
             this.IConexion.SaveChanges();
-            return entidad; 
+            return persona;
         }
 
         // -------- Empleados ------------

@@ -26,8 +26,8 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             if (entidad.Id != 0)
                 throw new Exception("ya se guardó");
-            if (Validaciones.ValidarSucursales(entidad)) 
-            throw new Exception("Falta información");
+            if (Validaciones.ValidarSucursales(entidad))
+                throw new Exception("Falta información");
 
             this.IConexion.Sucursales!.Add(entidad);
             this.IConexion.SaveChanges();
@@ -52,10 +52,15 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
+            var inventarios = this.IConexion.Inventarios!
+                .Where(x => x.sucursal == entidad.Id)
+                .ToList();
+            this.IConexion.Inventarios!.RemoveRange(inventarios);
+
+            entidad.inventarios = null;
             this.IConexion.Sucursales!.Remove(entidad);
             this.IConexion.SaveChanges();
             return entidad;
         }
-
     }
 }

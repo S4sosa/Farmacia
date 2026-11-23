@@ -76,6 +76,7 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
                 else
                 {
                     ActualPersona = this.IPersonalPresentacion.ActualizarPersona(ActualPersona!);
+                    ActualEmpleado!.persona = ActualPersona.Id;          // ← agregar esta línea
                     ActualEmpleado = this.IPersonalPresentacion.ActualizarEmpleado(ActualEmpleado!);
                 }
             }

@@ -50,6 +50,7 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
 
             var entry = this.IConexion.Entry<Compras>(entidad);
             entry.State = EntityState.Modified;
+            entry.Property(x => x.fecha).IsModified = false;   // ← agregar: conserva la fecha original
             this.IConexion.SaveChanges();
             return entidad;
         }

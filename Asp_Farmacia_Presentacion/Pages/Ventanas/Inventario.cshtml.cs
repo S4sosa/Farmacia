@@ -1,3 +1,4 @@
+using ClosedXML.Excel;
 using Lib_Farmacia_Aplicacion.entidades;
 using Lib_Farmacia_Aplicacion.nucleo;
 using Lib_Farmacia_Presentacion.interfaces;
@@ -49,6 +50,53 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
             catch (Exception ex)
             {
                 LogConversor.Log(ex, ViewData!);
+            }
+        }
+
+        public IActionResult OnPostBtExportarExcel()
+        {
+            try
+            {
+                var variable_session = HttpContext.Session.GetString("Usuario");
+                if (String.IsNullOrEmpty(variable_session))
+                    return Redirect("/");
+
+                var lista = this.IInventarioPresentacion.ConsultarProductos();
+
+                using var libro = new XLWorkbook();
+                var hoja = libro.Worksheets.Add("Productos");
+
+                // Encabezados
+                hoja.Cell(1, 1).Value = "Nombre";
+                hoja.Cell(1, 2).Value = "Categoría";
+                hoja.Cell(1, 3).Value = "Precio";
+                hoja.Row(1).Style.Font.Bold = true;
+
+                // Datos
+                int fila = 2;
+                foreach (var p in lista)
+                {
+                    hoja.Cell(fila, 1).Value = p.nombre ?? "";
+                    hoja.Cell(fila, 2).Value = p._categoria?.nombre ?? "";
+                    hoja.Cell(fila, 3).Value = p.precio;
+                    hoja.Cell(fila, 3).Style.NumberFormat.Format = "$ #,##0.00";
+                    fila++;
+                }
+
+                hoja.Columns().AdjustToContents();
+
+                using var stream = new MemoryStream();
+                libro.SaveAs(stream);
+
+                return File(stream.ToArray(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    "Productos_" + DateTime.Now.ToString("yyyyMMdd") + ".xlsx");
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+                OnPostBtConsultar();
+                return Page();
             }
         }
 

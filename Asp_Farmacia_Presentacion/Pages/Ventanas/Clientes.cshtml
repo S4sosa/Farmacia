@@ -61,6 +61,14 @@
                 <label>Teléfono</label>
                 <input asp-for="@Model.ActualPersona!.telefono" class="form-control" />
                 <br />
+                @if (Model.ActualCliente != null && Model.ActualCliente.Id != 0)
+                {
+                    <label>
+                        <input type="checkbox" asp-for="@Model.ActualCliente!.activo" />
+                        Activo
+                    </label>
+                    <br />
+                }
             </div>
         }
 
@@ -101,6 +109,24 @@
                            value="Borrar"
                            class="btn btn-secondary"
                            asp-page-handler="BtBorrar" />
+                </div>
+            </div>
+        }
+        @if (Model.BorrarReceta)
+        {
+            <input type="hidden" asp-for="@Model.ActualReceta!.Id" />
+            <div class="popup">
+                <div class="pp_del_inner">
+                    <h3>Mensaje</h3>
+                    <h4>¿Quiere borrar la receta de @Model.ActualReceta?._cliente?._persona?.nombre (médico: @Model.ActualReceta?.medicoNombre)?</h4>
+                    <input type="submit"
+                           value="Cancelar"
+                           class="btn btn-secondary"
+                           asp-page-handler="BtConsultar" />
+                    <input type="submit"
+                           value="Borrar"
+                           class="btn btn-secondary"
+                           asp-page-handler="BtBorrarReceta" />
                 </div>
             </div>
         }
@@ -173,7 +199,7 @@
                                     <input type="submit"
                                            value="Borrar"
                                            class="btn btn-secondary"
-                                           asp-page-handler="BtBorrarReceta"
+                                           asp-page-handler="BtPregBorrarReceta"
                                            asp-route-data="@elemento.Id" />
                                 </td>
                             </tr>

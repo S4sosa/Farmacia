@@ -20,6 +20,10 @@
                    value="Guardar"
                    class="btn btn-secondary"
                    asp-page-handler="BtGuardar" />
+            <input type="submit"
+                   value="Exportar Excel"
+                   class="btn btn-secondary"
+                   asp-page-handler="BtExportarExcel" />
             <input placeholder="Buscar por nombre"
                    asp-for="@Model.Filtro!.nombre" />
         </div>

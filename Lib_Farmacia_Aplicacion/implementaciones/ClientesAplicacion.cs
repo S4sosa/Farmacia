@@ -68,6 +68,7 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             // fechaRegistro y activo se mantienen protegidos.
             clienteExistente.persona = entidad.persona;
 
+
             var entry = this.IConexion.Entry(clienteExistente);
             entry.State = EntityState.Modified;
             this.IConexion.SaveChanges();
@@ -79,11 +80,43 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
-            this.IConexion.Clientes!.Remove(entidad);
-            this.IConexion.SaveChanges();
-            return entidad;
-        }
+            var cliente = this.IConexion.Clientes!.Find(entidad.Id);
+            if (cliente == null)
+                throw new Exception("El cliente no existe");
 
+            // ¿Tiene historial?
+            bool tieneMovimientos =
+                this.IConexion.Recetas!.Any(x => x.cliente == cliente.Id) ||
+                this.IConexion.Ventas!.Any(x => x.cliente == cliente.Id) ||
+                this.IConexion.Usuarios!.Any(x => x.cliente == cliente.Id);
+
+            if (tieneMovimientos)
+            {
+                // No se borra: solo se desactiva
+                cliente.activo = false;
+                this.IConexion.Entry(cliente).State = EntityState.Modified;
+                this.IConexion.SaveChanges();
+                return cliente;
+            }
+
+            // Sin historial: se borra el cliente...
+            this.IConexion.Clientes!.Remove(cliente);
+
+            // ...y su persona, solo si nadie más la usa
+            bool personaEnUso =
+                this.IConexion.Empleados!.Any(x => x.persona == cliente.persona) ||
+                this.IConexion.Clientes!.Any(x => x.persona == cliente.persona && x.Id != cliente.Id);
+
+            if (!personaEnUso)
+            {
+                var persona = this.IConexion.Personas!.Find(cliente.persona);
+                if (persona != null)
+                    this.IConexion.Personas!.Remove(persona);
+            }
+
+            this.IConexion.SaveChanges();
+            return cliente;
+        }
         // -------------- Recetas --------------
 
         public List<Recetas> ConsultarRecetas()
@@ -125,7 +158,16 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
             if (entidad.Id == 0)
                 throw new Exception("No se ha guardado");
 
-            this.IConexion.Recetas!.Remove(entidad);
+            var detalles = this.IConexion.DetallesRecetas!
+                .Where(x => x.receta == entidad.Id)
+                .ToList();
+            this.IConexion.DetallesRecetas!.RemoveRange(detalles);
+
+            entidad._cliente = null;
+            entidad.detallesRecetas = null;
+
+            var entry = this.IConexion.Entry<Recetas>(entidad);
+            entry.State = EntityState.Deleted;
             this.IConexion.SaveChanges();
             return entidad;
         }

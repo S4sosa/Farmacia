@@ -27,6 +27,7 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
         [BindProperty] public bool Formulario { get; set; } = false;
         [BindProperty] public bool FormularioReceta { get; set; } = false;
         [BindProperty] public bool Borrar { get; set; } = false;
+        [BindProperty] public bool BorrarReceta { get; set; } = false;
 
         public void OnGet() { OnPostBtConsultar(); }
 
@@ -78,6 +79,7 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
                 else
                 {
                     ActualPersona = this.IPersonalPresentacion.ActualizarPersona(ActualPersona!);
+                    ActualCliente!.persona = ActualPersona.Id;          // ← agregar esta línea
                     ActualCliente = this.IClientesPresentacion.ActualizarCliente(ActualCliente!);
                 }
             }
@@ -127,10 +129,8 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
             {
                 if (ActualCliente!.Id == 0) return;
                 this.IClientesPresentacion.BorrarCliente(ActualCliente!);
-                this.IPersonalPresentacion.BorrarPersona(ActualPersona!);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex)            {
                 LogConversor.Log(ex, ViewData!);
             }
             finally
@@ -191,14 +191,28 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
             }
         }
 
-        public void OnPostBtBorrarReceta(string data)
+        // Paso 1: mostrar la pregunta
+        public void OnPostBtPregBorrarReceta(string data)
         {
             try
             {
+                BorrarReceta = true;
                 OnPostBtConsultar();
-                var receta = ListaRecetas.FirstOrDefault(x => x.Id == Convert.ToInt32(data));
-                if (receta != null)
-                    this.IClientesPresentacion.BorrarReceta(receta);
+                ActualReceta = ListaRecetas.FirstOrDefault(x => x.Id == Convert.ToInt32(data));
+            }
+            catch (Exception ex)
+            {
+                LogConversor.Log(ex, ViewData!);
+            }
+        }
+
+        // Paso 2: borrar después de confirmar
+        public void OnPostBtBorrarReceta()
+        {
+            try
+            {
+                if (ActualReceta == null || ActualReceta.Id == 0) return;
+                this.IClientesPresentacion.BorrarReceta(ActualReceta!);
             }
             catch (Exception ex)
             {
