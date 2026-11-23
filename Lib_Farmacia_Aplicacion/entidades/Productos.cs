@@ -15,6 +15,7 @@ namespace Lib_Farmacia_Aplicacion.entidades
         public List<Inventarios>? inventarios { get; set; }
         public List<Lotes>? lotes { get; set; }
         public List<Medicamentos>? medicamentos { get; set; }
+        [JsonIgnore]
         public List<DetallesCompras>? detallesCompras { get; set; }
     }
 }

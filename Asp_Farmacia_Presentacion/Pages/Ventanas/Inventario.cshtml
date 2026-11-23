@@ -17,7 +17,7 @@
                    class="btn btn-secondary"
                    asp-page-handler="BtNuevo" />
             <input type="submit"
-                   value="Guardar"
+                   value="Guardar Producto"
                    class="btn btn-secondary"
                    asp-page-handler="BtGuardar" />
             <input type="submit"
@@ -110,7 +110,12 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(elemento.imagen))
                                     {
-                                        <img src="~/imagenes/@elemento.imagen" style="height:60px" />
+                                        <img src="~/imagenes/@elemento.imagen" alt="Imagen de @elemento.nombre"
+                                             style="height:80px" height:80px; object-fit:cover;" />
+                                    }
+                                    else
+                                    {
+                                        <span>Sin imagen</span>
                                     }
                                 </td>
                                 <td>

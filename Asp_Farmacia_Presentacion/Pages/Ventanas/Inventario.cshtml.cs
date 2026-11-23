@@ -30,6 +30,7 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
         [BindProperty] public bool Formulario { get; set; } = false;
         [BindProperty] public bool Borrar { get; set; } = false;
         [BindProperty] public IFormFile? ArchivoImagen { get; set; }
+        public void OnGet() { OnPostBtConsultar(); }
 
         public void OnPostBtConsultar()
         {

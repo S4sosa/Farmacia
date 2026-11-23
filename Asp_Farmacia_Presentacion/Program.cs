@@ -27,7 +27,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();      // ← agregar esta línea
+app.UseStaticFiles();      // permite el uso de archivos estáticos como imágenes. 
 app.UseRouting();
 app.UseSession(); // Agregar esta línea para habilitar el uso de sesiones, util en el login.
 app.UseAuthorization();

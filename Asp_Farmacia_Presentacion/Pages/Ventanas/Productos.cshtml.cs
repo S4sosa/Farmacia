@@ -28,14 +28,23 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
         {
             try
             {
-                var variable_session = HttpContext.Session.GetString("Usuario");
-                if (String.IsNullOrEmpty(variable_session))
+                var usuario = HttpContext.Session.GetString("Usuario");
+                var rol = HttpContext.Session.GetString("Rol");
+
+                if (string.IsNullOrEmpty(usuario))
+                {
+                    HttpContext.Response.Redirect("/");
+                    return;
+                }
+
+                if(rol != "General")
                 {
                     HttpContext.Response.Redirect("/");
                     return;
                 }
 
                 var nombre = Filtro?.nombre;
+
                 if (!string.IsNullOrWhiteSpace(nombre))
                     Lista = this.IProductosPresentacion.BuscarProducto(nombre);
                 else
@@ -51,6 +60,16 @@ namespace Asp_Farmacia_Presentacion.Pages.Ventanas
         {
             try
             {
+                //validacion de rol antes de comprar
+                var usuario = HttpContext.Session.GetString("Usuario");
+                var rol = HttpContext.Session.GetString("Rol");
+
+                if (String.IsNullOrEmpty(usuario) || rol != "General")
+                {
+                    HttpContext.Response.Redirect("/");
+                    return;
+                }
+
                 // Solo un cliente logueado puede comprar
                 var clienteId = HttpContext.Session.GetInt32("ClienteId") ?? 0;
                 if (clienteId == 0)

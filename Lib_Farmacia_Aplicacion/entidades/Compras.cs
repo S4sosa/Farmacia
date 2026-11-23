@@ -9,7 +9,6 @@ namespace Lib_Farmacia_Aplicacion.entidades
         [ForeignKey("laboratorio")] public Laboratorios? _laboratorio { get; set; }
         public DateTime fecha { get; set; }
         public Decimal total { get; set; }
-        [JsonIgnore]
         public List<DetallesCompras>? detallesCompras { get; set; }
 
     }

@@ -23,6 +23,8 @@ namespace Lib_Farmacia_Aplicacion.implementaciones
         {
             return this.IConexion.Compras!
                 .Include(x => x._laboratorio)
+                .Include(x => x.detallesCompras!)
+                .ThenInclude(x => x._producto)
                 .ToList();
         }
 

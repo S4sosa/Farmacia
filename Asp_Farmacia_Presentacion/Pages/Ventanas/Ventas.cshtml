@@ -21,7 +21,7 @@
                        class="btn btn-secondary"
                        asp-page-handler="BtNuevo" />
                 <input type="submit"
-                       value="Guardar"
+                       value="Guardar Venta"
                        class="btn btn-secondary"
                        asp-page-handler="BtGuardar" />
             }
@@ -83,10 +83,7 @@
                         {
                             <th>Cliente</th>
                         }
-                        @if (esCliente)
-                        {
-                            <th>Producto</th>
-                        }
+                        <th>Productos</th>
                         <th>Fecha</th>
                         <th>Total</th>
                         @if (rol == "Administrador")
@@ -103,21 +100,20 @@
                                 {
                                     <td>@elemento._cliente!._persona!.nombre</td>
                                 }
-                                @if (esCliente)
-                                {
-                                    <td>
-                                        @if (elemento.detallesVentas != null && elemento.detallesVentas.Any())
-                                        {
-                                            @string.Join(", ", elemento.detallesVentas
-                                                .Where(x => x._producto != null)
-                                                .Select(x => x._producto!.nombre))
-                                        }
-                                        else
-                                        {
-                                            <span>Sin producto</span>
-                                        }
-                                    </td>
-                                }
+                                <td>
+                                    @if (elemento.detallesVentas != null &&
+                                         elemento.detallesVentas.Any())
+                                    {
+                                        @string.Join(", ", elemento.detallesVentas
+                                            .Where(x => x._producto != null)
+                                            .Select(x =>
+                                                $"{x._producto!.nombre} x{x.cantidad}"))
+                                    }
+                                    else
+                                    {
+                                        <span>Sin producto</span>
+                                    }
+                                </td>
                                 <td>@elemento.fecha.ToShortDateString()</td>
                                 <td>@elemento.total.ToString("C")</td>
                                 @if (rol == "Administrador")

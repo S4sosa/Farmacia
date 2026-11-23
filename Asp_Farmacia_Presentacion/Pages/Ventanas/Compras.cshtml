@@ -17,7 +17,7 @@
                    class="btn btn-secondary"
                    asp-page-handler="BtNuevo" />
             <input type="submit"
-                   value="Guardar"
+                   value="Guardar Compra"
                    class="btn btn-secondary"
                    asp-page-handler="BtGuardar" />
         </div>
@@ -75,6 +75,7 @@
                 <table class="tb_data table table-striped table-bordered table-hover">
                     <tr>
                         <th>Laboratorio</th>
+                        <th>Productos</th>
                         <th>Fecha</th>
                         <th>Total</th>
                         <th>Acción</th>
@@ -85,6 +86,18 @@
                         {
                             <tr>
                                 <td>@elemento._laboratorio!.nombre</td>
+                                <td> @*Para ver los productos*@
+                                    @if (elemento.detallesCompras != null && elemento.detallesCompras.Any())
+                                    {
+                                        @string.Join(", ", elemento.detallesCompras
+                                            .Where(x => x._producto != null)
+                                            .Select(x => $"{x._producto!.nombre} x{x.cantidad}"))
+                                    }
+                                    else
+                                    {
+                                        <span>Sin producto</span>
+                                    }
+                                </td>
                                 <td>@elemento.fecha.ToShortDateString()</td>
                                 <td>@elemento.total.ToString("C")</td>
                                 <td>
